@@ -171,6 +171,7 @@ document.addEventListener('DOMContentLoaded', function () {
             </div>`;
                 addModalCloseEvents(modal);
                 console.log('Modal created for:', universityName); // Debugging line
+                modal.style.display = 'block'; // Add this to ensure the modal is visible when created
                 return modal;
             }
 
