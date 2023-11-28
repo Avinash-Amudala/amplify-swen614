@@ -107,10 +107,18 @@ document.addEventListener('DOMContentLoaded', function () {
         span.onclick = function() { modal.style.display = "none"; modal.remove(); };
         window.onclick = function(event) { if (event.target == modal) { modal.style.display = "none"; modal.remove(); } };
     }
+    let currentChart;
 
     function createSentimentChart(sentimentCounts, canvasId) {
         const ctx = document.getElementById(canvasId).getContext('2d');
-        new Chart(ctx, {
+
+        // Destroy the existing chart if it exists
+        if (currentChart) {
+            currentChart.destroy();
+        }
+
+        // Create a new chart
+        currentChart = new Chart(ctx, {
             type: 'pie',
             data: {
                 labels: ['Positive', 'Negative', 'Neutral', 'Mixed'],
@@ -128,6 +136,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+
 
     // Calculate sentiment percentage (optional for tooltips)
     function calculateSentimentPercentage(count, total) {
