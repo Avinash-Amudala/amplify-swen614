@@ -147,8 +147,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 const modal = createModal(universityName, details);
                 document.body.appendChild(modal);
                 createSentimentChart(calculateSentimentCounts(details.reviews), 'sentimentChart');
-                getPersonalizeRecommendations(universityName); // Fetch Personalize data before displaying
-                // modal.style.display = 'block'; // Moved to displayKeywords
+                getPersonalizeRecommendations(universityName); // Fetch Personalize data
+                modal.style.display = 'block';
             }
 
             // Create Modal for University Details
@@ -164,10 +164,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     <canvas id="sentimentChart"></canvas>
                 </div>
                 <div class="keywords-container">
-                    <h3>Positive Keywords</h3>
-                    <ul id="positive-keywords"></ul>
-                    <h3>Negative Keywords</h3>
-                    <ul id="negative-keywords"></ul>
+                    <h3>Recommended Universities</h3>
+                    <ul id="recommended-universities"></ul> <!-- Placeholder for recommended universities -->
                 </div>
             </div>
         </div>`;
@@ -231,15 +229,21 @@ document.addEventListener('DOMContentLoaded', function () {
                 const apiGatewayUrl = 'https://za8k6zxf6c.execute-api.us-east-2.amazonaws.com/prod';
                 fetch(apiGatewayUrl, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
                     body: JSON.stringify({ userId: userId })
                 })
                     .then(response => response.json())
                     .then(data => {
-                        console.log('Personalize Recommendations:', data);
-                        displayKeywords(data, userId);
+                        displayPersonalizeRecommendations(data, userId);
                     })
                     .catch(error => console.error('Error:', error));
+            }
+            function displayPersonalizeRecommendations(data, universityName) {
+                const recommendationList = document.getElementById('recommended-universities');
+                recommendationList.innerHTML = data.itemList.map(item => `<li>${item.itemId}</li>`).join('');
+                // Optionally, you can also display scores or any other relevant info from the data
             }
 
             function displayKeywords(data, universityName) {
