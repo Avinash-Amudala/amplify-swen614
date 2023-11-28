@@ -238,9 +238,19 @@ document.addEventListener('DOMContentLoaded', function () {
                     .then(response => response.json())
                     .then(data => {
                         console.log('Personalize Recommendations:', data);
-                        // Process and display recommendations here
+                        displayKeywords(data, universityName);
                     })
                     .catch(error => console.error('Error fetching Personalize recommendations:', error));
+            }
+            function displayKeywords(data, universityName) {
+                // Process 'data' to extract positive and negative keywords
+                // Update the modal content with these keywords
+                const modal = document.querySelector('.modal');
+                if (modal && modal.querySelector('.keywords-container')) {
+                    // Update the modal's keywords container with new keywords
+                    // This is a placeholder; you need to adjust it based on your data structure
+                    modal.querySelector('.keywords-container').innerHTML = `<ul>${data.positiveKeywords.map(keyword => `<li>${keyword}</li>`).join('')}</ul>`;
+                }
             }
 
             // Event listener for the search bar
