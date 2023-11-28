@@ -64,14 +64,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Display university details
     function displayUniversityDetails(universityName) {
+        alert('Clicked on: ' + universityName);
         const details = universitiesData[universityName];
         const modal = createModal(universityName, details);
         document.body.appendChild(modal);
         createSentimentChart(calculateSentimentCounts(details.reviews), 'sentimentChart');
+        modal.style.display = 'block';
+        console.log('Displaying details for:', universityName);
     }
 
     // Create Modal for University Details
     function createModal(universityName, details) {
+        console.log('Creating modal for:', universityName);
         const modal = document.createElement('div');
         modal.className = 'modal';document.addEventListener('DOMContentLoaded', function () {
             let universitiesData = {};
