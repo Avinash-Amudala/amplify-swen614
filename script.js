@@ -29,10 +29,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 row.KEYWORDS.split(',').forEach(keyword => {
                     universitiesData[row.ITEM_ID].keywords.add(keyword.trim());
                 });
+            } else {
+                // Log for debugging
+                console.log('Row with undefined KEYWORDS:', row);
             }
         });
         displayUniversityCards(Object.keys(universitiesData));
     }
+
 
     // Process Reviews CSV Data
     function processUniversityReviews(data) {
