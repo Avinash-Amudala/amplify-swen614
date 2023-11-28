@@ -146,32 +146,32 @@ document.addEventListener('DOMContentLoaded', function () {
                 const details = universitiesData[universityName];
                 const modal = createModal(universityName, details);
                 document.body.appendChild(modal);
-                modal.style.display = 'block'; // Add this line to display the modal
                 createSentimentChart(calculateSentimentCounts(details.reviews), 'sentimentChart');
+                getPersonalizeRecommendations(universityName); // Fetch and display Personalize data
+                modal.style.display = 'block';
             }
-
 
             // Create Modal for University Details
             function createModal(universityName, details) {
                 const modal = document.createElement('div');
                 modal.className = 'modal';
                 modal.innerHTML = `
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <h2>${universityName}</h2>
-                <div class="content-container">
-                    <div class="chart-container">
-                        <canvas id="sentimentChart"></canvas>
-                    </div>
-                    <div class="keywords-container">
-                        <h3>Keywords</h3>
-                        <ul>${Array.from(details.keywords).map(keyword => `<li>${keyword}</li>`).join('')}</ul>
-                    </div>
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>${universityName}</h2>
+            <div class="content-container">
+                <div class="chart-container">
+                    <canvas id="sentimentChart"></canvas>
                 </div>
-            </div>`;
+                <div class="keywords-container">
+                    <h3>Positive Keywords</h3>
+                    <ul id="positive-keywords"></ul>
+                    <h3>Negative Keywords</h3>
+                    <ul id="negative-keywords"></ul>
+                </div>
+            </div>
+        </div>`;
                 addModalCloseEvents(modal);
-                console.log('Modal created for:', universityName); // Debugging line
-                modal.style.display = 'block'; // Add this to ensure the modal is visible when created
                 return modal;
             }
 
@@ -227,31 +227,25 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             // Personalize recommendations (optional)
-            function getPersonalizeRecommendations(userId) {
+            function getPersonalizeRecommendations(universityName) {
                 const apiGatewayUrl = 'https://za8k6zxf6c.execute-api.us-east-2.amazonaws.com/prod';
                 fetch(apiGatewayUrl, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ userId: userId })
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId: universityName }) // Assuming universityName is used as userId in Personalize
                 })
                     .then(response => response.json())
                     .then(data => {
-                        console.log('Personalize Recommendations:', data);
                         displayKeywords(data, universityName);
                     })
-                    .catch(error => console.error('Error fetching Personalize recommendations:', error));
+                    .catch(error => console.error('Error:', error));
             }
+
             function displayKeywords(data, universityName) {
-                // Process 'data' to extract positive and negative keywords
-                // Update the modal content with these keywords
-                const modal = document.querySelector('.modal');
-                if (modal && modal.querySelector('.keywords-container')) {
-                    // Update the modal's keywords container with new keywords
-                    // This is a placeholder; you need to adjust it based on your data structure
-                    modal.querySelector('.keywords-container').innerHTML = `<ul>${data.positiveKeywords.map(keyword => `<li>${keyword}</li>`).join('')}</ul>`;
-                }
+                const positiveList = document.getElementById('positive-keywords');
+                const negativeList = document.getElementById('negative-keywords');
+                positiveList.innerHTML = data.positiveKeywords.map(kw => `<li>${kw}</li>`).join('');
+                negativeList.innerHTML = data.negativeKeywords.map(kw => `<li>${kw}</li>`).join('');
             }
 
             // Event listener for the search bar
