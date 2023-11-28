@@ -25,9 +25,11 @@ document.addEventListener('DOMContentLoaded', function () {
             if (!universitiesData[row.ITEM_ID]) {
                 universitiesData[row.ITEM_ID] = { keywords: new Set(), reviews: [] };
             }
-            row.KEYWORDS.split(',').forEach(keyword => {
-                universitiesData[row.ITEM_ID].keywords.add(keyword.trim());
-            });
+            if (row.KEYWORDS) {
+                row.KEYWORDS.split(',').forEach(keyword => {
+                    universitiesData[row.ITEM_ID].keywords.add(keyword.trim());
+                });
+            }
         });
         displayUniversityCards(Object.keys(universitiesData));
     }
