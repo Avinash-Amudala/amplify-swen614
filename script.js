@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function getPersonalizeRecommendations(universityName, details) {
-        fetch('https://za8k6zxf6c.execute-api.us-east-2.amazonaws.com/test', {
+        fetch('https://za8k6zxf6c.execute-api.us-east-2.amazonaws.com/prod', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ userId: universityName })
