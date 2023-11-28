@@ -147,8 +147,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 const modal = createModal(universityName, details);
                 document.body.appendChild(modal);
                 createSentimentChart(calculateSentimentCounts(details.reviews), 'sentimentChart');
-                getPersonalizeRecommendations(universityName); // Fetch and display Personalize data
-                modal.style.display = 'block';
+                getPersonalizeRecommendations(universityName); // Fetch Personalize data before displaying
+                // modal.style.display = 'block'; // Moved to displayKeywords
             }
 
             // Create Modal for University Details
@@ -227,25 +227,28 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             // Personalize recommendations (optional)
-            function getPersonalizeRecommendations(universityName) {
+            function getPersonalizeRecommendations(userId) {
                 const apiGatewayUrl = 'https://za8k6zxf6c.execute-api.us-east-2.amazonaws.com/prod';
                 fetch(apiGatewayUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ userId: universityName }) // Assuming universityName is used as userId in Personalize
+                    body: JSON.stringify({ userId: userId })
                 })
                     .then(response => response.json())
                     .then(data => {
-                        displayKeywords(data, universityName);
+                        console.log('Personalize Recommendations:', data);
+                        displayKeywords(data, userId);
                     })
                     .catch(error => console.error('Error:', error));
             }
 
             function displayKeywords(data, universityName) {
+                // Assuming data structure is known and contains positiveKeywords and negativeKeywords arrays
                 const positiveList = document.getElementById('positive-keywords');
                 const negativeList = document.getElementById('negative-keywords');
                 positiveList.innerHTML = data.positiveKeywords.map(kw => `<li>${kw}</li>`).join('');
                 negativeList.innerHTML = data.negativeKeywords.map(kw => `<li>${kw}</li>`).join('');
+                document.querySelector('.modal').style.display = 'block'; // Display modal after updating keywords
             }
 
             // Event listener for the search bar
