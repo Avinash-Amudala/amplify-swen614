@@ -5,11 +5,13 @@ document.addEventListener('DOMContentLoaded', function () {
     let currentUser = null;
 
     function initializeApp() {
+        console.log("Initializing application...");
         fetchCsvData('https://uniview-dynamodb.s3.us-east-2.amazonaws.com/interactions.csv', processUniversityData);
         fetchCsvData('https://uniview-dynamodb.s3.us-east-2.amazonaws.com/matrix.csv', processUserUniversityMatrix);
     }
 
     function fetchCsvData(csvUrl, callback) {
+        console.log(`Fetching data from: ${csvUrl}`);
         Papa.parse(csvUrl, {
             download: true,
             header: true,
@@ -18,13 +20,16 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function processUserUniversityMatrix(data) {
+        console.log("Processing user-university matrix...");
         userUniversityMatrix = data.reduce((acc, row) => {
             acc[row.USER_ID] = row;
             return acc;
         }, {});
+        console.log("Processed userUniversityMatrix:", userUniversityMatrix);
     }
 
     function processUniversityData(data) {
+        console.log("Processing university data...");
         universitiesData = data.reduce((acc, row) => {
             if (!acc[row.ITEM_ID]) {
                 acc[row.ITEM_ID] = {
@@ -45,6 +50,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
             return acc;
         }, {});
+        console.log("Processed universitiesData:", universitiesData);
         displayUniversityCards();
     }
 
@@ -82,9 +88,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function getRecommendations(userId, universityName) {
+        console.log(`Getting recommendations for user: ${userId}`);
         let recommendedUniversities = userUniversityMatrix[userId]
             ? calculateRecommendationsForUser(userId)
             : getInitialRecommendations();
+        console.log("Recommended Universities:", recommendedUniversities);
         updateRecommendationsList(recommendedUniversities, universityName);
     }
     function getInitialRecommendations() {
@@ -102,6 +110,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .slice(0, 5);
     }
     function calculateRecommendationsForUser(userId) {
+        console.log(`Calculating recommendations for existing user: ${userId}`);
         // Logic to get recommendations for existing users
         // For simplicity, we'll recommend the top 5 universities based on the user's interaction history
         const userInteractions = userUniversityMatrix[userId];
@@ -146,10 +155,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     function updateRecommendationsList(recommendedUniversities, universityName) {
+        console.log(`Updating recommendations list for: ${universityName}`);
         const recommendationsListId = `recommendations-list-${universityName.replace(/\s+/g, '-')}`;
         const recommendationsList = document.getElementById(recommendationsListId);
         if (recommendationsList) {
-            recommendationsList.innerHTML = recommendedUniversities.map(university => `<li>${university}</li>`).join('');
+            if (recommendedUniversities.length > 0) {
+                recommendationsList.innerHTML = recommendedUniversities.map(university => `<li>${university}</li>`).join('');
+            } else {
+                recommendationsList.innerHTML = '<li>No recommendations available</li>';
+            }
         }
     }
 
