@@ -81,40 +81,33 @@ document.addEventListener('DOMContentLoaded', function () {
         getMatrixBasedRecommendations(currentUser, name); // Use the current user's ID
     }
     function getMatrixBasedRecommendations(userId, universityName) {
-        // Get similarity scores for the specified user
         const userSimilarities = userSimilarityMatrix[userId] || {};
         const sortedSimilarUsers = Object.entries(userSimilarities)
-            .sort((a, b) => b[1] - a[1]) // Sort users by similarity score
-            .slice(1, 6); // Take the top 5 similar users, excluding the user themselves
+            .sort((a, b) => b[1] - a[1])
+            .slice(1, 6);
 
-        // Use the sorted similar users to generate university recommendations
-        const recommendedUniversities = sortedSimilarUsers.map(([similarUserId, _]) => {
-            // Logic to map similar user IDs to their most reviewed or preferred university
-            // This is a placeholder. You need to replace it with your own logic.
-            return getPreferredUniversityForUser(similarUserId);
-        });
+        // Map similar users to their preferred universities
+        const recommendedUniversities = sortedSimilarUsers.map(([similarUserId, _]) => getPreferredUniversityForUser(similarUserId)).filter(Boolean);
 
-        // Update the recommendations list in the modal
+        // Update recommendations list
         updateRecommendationsList(recommendedUniversities, universityName);
     }
     function getPreferredUniversityForUser(userId) {
         let topUniversity = '';
         let topScore = -1;
 
-        interactions_data.filter(review => review.USER_ID === userId).forEach(review => {
-            if (review.POSITIVE_SCORE > topScore) {
+        // Iterate over each review and find the top university for the user based on positive score
+        universitiesData.forEach(review => {
+            if (review.USER_ID === userId && review.POSITIVE_SCORE > topScore) {
                 topScore = review.POSITIVE_SCORE;
                 topUniversity = review.ITEM_ID;
             }
         });
 
-        return topUniversity || 'No top university found';
+        return topUniversity;
     }
-
-
     function updateRecommendationsList(recommendedUniversities, universityName) {
-        // Correctly target the recommendations list within the modal for the specific university
-        const recommendationsListId = `recommendations-list-${universityName.replace(/\s+/g, '-')}`; // Generate a valid ID
+        const recommendationsListId = `recommendations-list-${universityName.replace(/\s+/g, '-')}`;
         const recommendationsList = document.getElementById(recommendationsListId);
         if (recommendationsList) {
             recommendationsList.innerHTML = recommendedUniversities.map(university => `<li>${university}</li>`).join('');
