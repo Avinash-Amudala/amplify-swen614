@@ -24,14 +24,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 };
             }
             acc[row.ITEM_ID].reviews.push(row);
-
-            // Check if positive and negative keywords exist before splitting
-            if (row.POSITIVE_KEYWORDS) {
-                row.POSITIVE_KEYWORDS.split(',').forEach(kw => acc[row.ITEM_ID].positiveKeywords.add(kw.trim()));
-            }
-            if (row.NEGATIVE_KEYWORDS) {
-                row.NEGATIVE_KEYWORDS.split(',').forEach(kw => acc[row.ITEM_ID].negativeKeywords.add(kw.trim()));
-            }
+            row.POSITIVE_KEYWORDS?.split(',').forEach(kw => acc[row.ITEM_ID].positiveKeywords.add(kw.trim()));
+            row.NEGATIVE_KEYWORDS?.split(',').forEach(kw => acc[row.ITEM_ID].negativeKeywords.add(kw.trim()));
 
             acc[row.ITEM_ID].sentimentScores.push({
                 positive: parseFloat(row.POSITIVE_SCORE),
@@ -42,7 +36,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }, {});
         displayUniversityCards();
     }
-
 
     function displayUniversityCards() {
         const universityList = document.getElementById('universityList');
@@ -96,9 +89,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function getPersonalizeRecommendations(universityName, details) {
-        // Placeholder for fetching personalized recommendations
-        // Assuming the response will have a field 'recommendations'
-        // Update the URL and data structure as per your API's response
         fetch('https://i978sjfn4d.execute-api.us-east-2.amazonaws.com/prod', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
