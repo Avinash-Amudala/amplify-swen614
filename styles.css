@@ -101,10 +101,10 @@ button#searchButton:hover {
     padding: 20px;
     border-radius: 8px;
     border: 1px solid #888;
-    width: 70%; /* Increase width */
-    max-width: 900px; /* Increase max width */
+    width: 80%; /* Adjust width for better view */
+    max-width: 1000px; /* Increase max width for more space */
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    overflow: hidden; /* Prevent overflow */
+    overflow-y: auto; /* Enable vertical scroll inside modal */
 }
 
 .modal-body {
@@ -113,8 +113,6 @@ button#searchButton:hover {
     gap: 20px;
     align-items: start;
     margin-top: 20px;
-    overflow-y: auto; /* Allow vertical scrolling */
-    max-height: 80vh; /* Increase max height for the modal body */
 }
 
 .chart-container {
@@ -123,7 +121,7 @@ button#searchButton:hover {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    max-height: 400px; /* Increase height */
+    max-height: 400px; /* Adjust height for chart */
     overflow: hidden;
 }
 
@@ -132,7 +130,6 @@ button#searchButton:hover {
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    overflow-y: auto; /* Allow scrolling */
 }
 
 .keywords-section h3 {
@@ -142,6 +139,7 @@ button#searchButton:hover {
     padding: 10px 0;
     margin-top: -10px;
     z-index: 10;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .keywords-container, .score-container, .personalized-recommendations {
@@ -166,7 +164,6 @@ button#searchButton:hover {
     border-radius: 5px;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
     .modal-content {
         width: 85%;
@@ -177,6 +174,7 @@ button#searchButton:hover {
     }
 
     .chart-container {
+        grid-column: auto;
         max-height: 300px; /* Adjust height for smaller screens */
     }
 }
@@ -184,6 +182,10 @@ button#searchButton:hover {
 @media (max-width: 480px) {
     .modal-content {
         width: 95%;
+    }
+
+    .chart-container {
+        max-height: 250px;
     }
 }
 
@@ -223,7 +225,6 @@ button#searchButton:hover {
 
 .chart-container {
     flex: 1;
-    max-height: 60vh;
     margin-right: 20px;
 }
 
@@ -234,6 +235,7 @@ button#searchButton:hover {
     max-height: 250px; /* Increase max height */
     overflow-y: auto; /* Allow scrolling */
     overflow-x: hidden; /* Hide horizontal scroll */
+    border: 1px solid #ddd; /* Add border for clear separation */
 }
 
 .keywords-container h3 {
@@ -259,4 +261,3 @@ button#searchButton:hover {
     padding: 5px 10px;
     border-radius: 5px;
 }
-
