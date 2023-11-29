@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Placeholder for fetching personalized recommendations
         // Assuming the response will have a field 'recommendations'
         // Update the URL and data structure as per your API's response
-        fetch('https://za8k6zxf6c.execute-api.us-east-2.amazonaws.com/prod', {
+        fetch('https://i978sjfn4d.execute-api.us-east-2.amazonaws.com/prod', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ userId: universityName })
