@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     let universitiesData = {};
     let userSimilarityMatrix = {};
+    let sentimentChartInstance = null; // Global variable to keep track of the chart instance
 
     function initializeApp() {
         fetchCsvData('https://uniview-dynamodb.s3.us-east-2.amazonaws.com/interactions.csv', processUniversityData);
@@ -16,11 +17,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function processUserSimilarityMatrix(data) {
-        // Transform the CSV data into a user similarity matrix
         userSimilarityMatrix = data.reduce((acc, row) => {
-            const userId = row.USER_ID;
-            delete row.USER_ID; // Remove the user ID key from the row
-            acc[userId] = row;
+            acc[row.USER_ID] = row;
             return acc;
         }, {});
     }
@@ -65,9 +63,11 @@ document.addEventListener('DOMContentLoaded', function () {
         const details = universitiesData[name];
         createModal(name, details);
 
-        // Get recommendations for the university
-        const userId = 'User_0'; // Replace with the actual user ID in your application
-        getMatrixBasedRecommendations(userId, name);
+        // Replace the existing Personalize call with our own recommendation logic
+        getMatrixBasedRecommendations(name).catch(error => {
+            console.error('Error generating matrix-based recommendations:', error);
+            // Handle error in UI
+        });
     }
 
     function getMatrixBasedRecommendations(userId, universityName) {
@@ -101,44 +101,49 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function createModal(name, details) {
+        // Remove any existing modal
+        const existingModal = document.querySelector('.modal');
+        if (existingModal) {
+            existingModal.remove();
+        }
+
         const modal = document.createElement('div');
         modal.className = 'modal';
         modal.innerHTML = `
-            <div class="modal-content">
-                <span class="close" onclick="this.parentElement.parentElement.style.display='none'">&times;</span>
-                <h2>${name}</h2>
-                <div class="modal-body">
-                    <div class="chart-container">
-                        <h3>Sentiment Analysis</h3>
-                        <canvas id="sentimentChart"></canvas>
+        <div class="modal-content">
+            <span class="close" onclick="this.parentElement.parentElement.style.display='none'">&times;</span>
+            <h2>${name}</h2>
+            <div class="modal-body">
+                <div class="chart-container">
+                    <h3>Sentiment Analysis</h3>
+                    <canvas id="sentimentChart-${name}"></canvas> <!-- Unique ID for each canvas -->
+                </div>
+                <div class="keywords-section">
+                    <div class="keywords-container">
+                        <h3>Positive Keywords</h3>
+                        <ul>${Array.from(details.positiveKeywords).map(kw => `<li>${kw}</li>`).join('')}</ul>
                     </div>
-                    <div class="keywords-section">
-                        <div class="keywords-container">
-                            <h3>Positive Keywords</h3>
-                            <ul>${Array.from(details.positiveKeywords).map(kw => `<li>${kw}</li>`).join('')}</ul>
-                        </div>
-                        <div class="keywords-container">
-                            <h3>Negative Keywords</h3>
-                            <ul>${Array.from(details.negativeKeywords).map(kw => `<li>${kw}</li>`).join('')}</ul>
-                        </div>
-                    </div>
-                    <div class="score-container">
-                        <h3>Average Sentiment Scores</h3>
-                        <p><strong>Positive:</strong> ${calculateAverageScore(details.sentimentScores, 'positive')}%</p>
-                        <p><strong>Negative:</strong> ${calculateAverageScore(details.sentimentScores, 'negative')}%</p>
-                        <p><strong>Neutral:</strong> ${calculateAverageScore(details.sentimentScores, 'neutral')}%</p>
-                    </div>
-                    <div class="personalized-recommendations">
-                        <h3>Personalized Recommendations</h3>
-                        <ul id="recommendations-list"></ul>
+                    <div class="keywords-container">
+                        <h3>Negative Keywords</h3>
+                        <ul>${Array.from(details.negativeKeywords).map(kw => `<li>${kw}</li>`).join('')}</ul>
                     </div>
                 </div>
-            </div>`;
+                <div class="score-container">
+                    <h3>Average Sentiment Scores</h3>
+                    <p><strong>Positive:</strong> ${calculateAverageScore(details.sentimentScores, 'positive')}%</p>
+                    <p><strong>Negative:</strong> ${calculateAverageScore(details.sentimentScores, 'negative')}%</p>
+                    <p><strong>Neutral:</strong> ${calculateAverageScore(details.sentimentScores, 'neutral')}%</p>
+                </div>
+                <div class="personalized-recommendations">
+                    <h3>Personalized Recommendations</h3>
+                    <ul id="recommendations-list-${name}"></ul> <!-- Unique ID for recommendations list -->
+                </div>
+            </div>
+        </div>`;
         document.body.appendChild(modal);
-        createSentimentChart(calculateSentimentCounts(details.reviews), 'sentimentChart');
+        createSentimentChart(calculateSentimentCounts(details.reviews), `sentimentChart-${name}`);
         modal.style.display = 'block';
     }
-
 
     function getPersonalizeRecommendations(universityName, details) {
         fetch('https://i978sjfn4d.execute-api.us-east-2.amazonaws.com/prod', {
@@ -156,8 +161,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function createSentimentChart(counts, canvasId) {
+        if (sentimentChartInstance) {
+            sentimentChartInstance.destroy();
+        }
+
         const ctx = document.getElementById(canvasId).getContext('2d');
-        new Chart(ctx, {
+        sentimentChartInstance = new Chart(ctx, {
             type: 'pie',
             data: {
                 labels: ['Positive', 'Negative', 'Neutral', 'Mixed'],
@@ -171,7 +180,7 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: false, // Adjust this as needed
+                maintainAspectRatio: false,
                 layout: {
                     padding: {
                         top: 15,
@@ -181,8 +190,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
-
-
     function calculateSentimentCounts(reviews) {
         return reviews.reduce((counts, review) => {
             counts[review.EVENT_VALUE] = (counts[review.EVENT_VALUE] || 0) + 1;
