@@ -96,15 +96,20 @@ document.addEventListener('DOMContentLoaded', function () {
         let topUniversity = '';
         let topScore = -1;
 
-        universitiesData.forEach(review => {
-            if (review.USER_ID === userId && review.POSITIVE_SCORE > topScore) {
-                topScore = review.POSITIVE_SCORE;
-                topUniversity = review.ITEM_ID;
-            }
+        // Convert the universitiesData object's values to an array and iterate over it
+        Object.values(universitiesData).forEach(university => {
+            // Assuming each university is an object with a 'reviews' array
+            university.reviews.forEach(review => {
+                if (review.USER_ID === userId && review.POSITIVE_SCORE > topScore) {
+                    topScore = review.POSITIVE_SCORE;
+                    topUniversity = review.ITEM_ID;
+                }
+            });
         });
 
         return topUniversity;
     }
+
 
     function updateRecommendationsList(recommendedUniversities, universityName) {
         const recommendationsListId = `recommendations-list-${universityName.replace(/\s+/g, '-')}`;
