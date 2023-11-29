@@ -98,10 +98,19 @@ document.addEventListener('DOMContentLoaded', function () {
         updateRecommendationsList(recommendedUniversities, universityName);
     }
     function getPreferredUniversityForUser(userId) {
-        // Placeholder function - implement logic to determine the preferred university for a user
-        // For example, you might look at the universities they have reviewed most positively
-        return 'Example University'; // Replace with actual logic
+        let topUniversity = '';
+        let topScore = -1;
+
+        interactions_data.filter(review => review.USER_ID === userId).forEach(review => {
+            if (review.POSITIVE_SCORE > topScore) {
+                topScore = review.POSITIVE_SCORE;
+                topUniversity = review.ITEM_ID;
+            }
+        });
+
+        return topUniversity || 'No top university found';
     }
+
 
     function updateRecommendationsList(recommendedUniversities, universityName) {
         // Correctly target the recommendations list within the modal for the specific university
