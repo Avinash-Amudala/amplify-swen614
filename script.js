@@ -22,7 +22,13 @@ document.addEventListener('DOMContentLoaded', function () {
     function processUserUniversityMatrix(data) {
         console.log("Processing user-university matrix...");
         userUniversityMatrix = data.reduce((acc, row) => {
-            acc[row.USER_ID] = row;
+            let userId = row.USER_ID;  // Ensure this matches the actual column name in your CSV
+            if (userId) {
+                acc[userId] = row;
+                delete acc[userId].USER_ID;  // Remove USER_ID to keep only university interactions
+            } else {
+                console.log("Missing USER_ID in row:", row);  // Log any rows missing USER_ID
+            }
             return acc;
         }, {});
         console.log("Processed userUniversityMatrix:", userUniversityMatrix);
