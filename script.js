@@ -1,12 +1,12 @@
 document.addEventListener('DOMContentLoaded', function () {
     let universitiesData = {};
-    let userSimilarityMatrix = {};
-    let sentimentChartInstance = null; // Global variable to keep track of the chart instance
+    let userUniversityMatrix = {};
+    let sentimentChartInstance = null;
     let currentUser = null;
 
     function initializeApp() {
         fetchCsvData('https://uniview-dynamodb.s3.us-east-2.amazonaws.com/interactions.csv', processUniversityData);
-        fetchCsvData('https://uniview-dynamodb.s3.us-east-2.amazonaws.com/matrix.csv', processUserSimilarityMatrix);
+        fetchCsvData('https://uniview-dynamodb.s3.us-east-2.amazonaws.com/matrix.csv', processUserUniversityMatrix);
     }
 
     function fetchCsvData(csvUrl, callback) {
@@ -17,8 +17,8 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    function processUserSimilarityMatrix(data) {
-        userSimilarityMatrix = data.reduce((acc, row) => {
+    function processUserUniversityMatrix(data) {
+        userUniversityMatrix = data.reduce((acc, row) => {
             acc[row.USER_ID] = row;
             return acc;
         }, {});
@@ -78,8 +78,42 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         const details = universitiesData[name];
         createModal(name, details);
-        getMatrixBasedRecommendations(currentUser, name); // Use the current user's ID
+        getRecommendations(currentUser, name);
     }
+
+    function getRecommendations(userId, universityName) {
+        let recommendedUniversities = userUniversityMatrix[userId]
+            ? calculateRecommendationsForUser(userId)
+            : getInitialRecommendations();
+        updateRecommendationsList(recommendedUniversities, universityName);
+    }
+    function getInitialRecommendations() {
+        // Logic for initial recommendations for new users
+        // We'll recommend the top 5 universities based on overall interactions
+        const universityScores = {};
+        Object.values(userUniversityMatrix).forEach(user => {
+            for (let university in user) {
+                universityScores[university] = (universityScores[university] || 0) + user[university];
+            }
+        });
+        return Object.entries(universityScores)
+            .sort((a, b) => b[1] - a[1])
+            .map(entry => entry[0])
+            .slice(0, 5);
+    }
+    function calculateRecommendationsForUser(userId) {
+        // Logic to get recommendations for existing users
+        // For simplicity, we'll recommend the top 5 universities based on the user's interaction history
+        const userInteractions = userUniversityMatrix[userId];
+        const recommendedUniversities = [];
+        for (let university in userInteractions) {
+            if (userInteractions[university] > 0) {
+                recommendedUniversities.push(university);
+            }
+        }
+        return recommendedUniversities.slice(0, 5);
+    }
+
     function getMatrixBasedRecommendations(userId, universityName) {
         const userSimilarities = userSimilarityMatrix[userId] || {};
         const sortedSimilarUsers = Object.entries(userSimilarities)
