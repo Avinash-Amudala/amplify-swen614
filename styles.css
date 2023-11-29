@@ -126,7 +126,7 @@ button#searchButton:hover {
     display: flex;
     flex-direction: column;
     align-items: center;
-    max-height: 400px;
+    max-height: 500px;
     overflow: hidden;
     justify-content: center;
 }
@@ -215,7 +215,6 @@ button#searchButton:hover {
     align-items: flex-start;
     padding: 20px;
     flex: 1;
-    overflow-y: auto;
 }
 
 .chart-container {
