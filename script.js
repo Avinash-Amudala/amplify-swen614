@@ -16,8 +16,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function processUserSimilarityMatrix(data) {
+        // Transform the CSV data into a user similarity matrix
         userSimilarityMatrix = data.reduce((acc, row) => {
-            acc[row.USER_ID] = row;
+            const userId = row.USER_ID;
+            delete row.USER_ID; // Remove the user ID key from the row
+            acc[userId] = row;
             return acc;
         }, {});
     }
@@ -62,27 +65,39 @@ document.addEventListener('DOMContentLoaded', function () {
         const details = universitiesData[name];
         createModal(name, details);
 
-        // Replace the existing Personalize call with our own recommendation logic
-        getMatrixBasedRecommendations(name).catch(error => {
-            console.error('Error generating matrix-based recommendations:', error);
-            // Handle error in UI
-        });
+        // Get recommendations for the university
+        const userId = 'User_0'; // Replace with the actual user ID in your application
+        getMatrixBasedRecommendations(userId, name);
     }
-    function getMatrixBasedRecommendations(userId) {
-        // Assuming 'userId' is the key to look up in the user similarity matrix
+
+    function getMatrixBasedRecommendations(userId, universityName) {
+        // Get similarity scores for the specified user
         const userSimilarities = userSimilarityMatrix[userId] || {};
-        const similarUsers = Object.entries(userSimilarities)
-            .sort((a, b) => b[1] - a[1]) // Sort by similarity score
-            .slice(1, 6) // Take top 5 similar users, skipping the first entry (self)
-            .map(([similarUserId, _]) => similarUserId);
+        const sortedSimilarUsers = Object.entries(userSimilarities)
+            .sort((a, b) => b[1] - a[1]) // Sort users by similarity score
+            .slice(1, 6); // Take the top 5 similar users, excluding the user themselves
 
-        // Update the UI with the recommendations
-        updateRecommendationsList(similarUsers);
+        // Use the sorted similar users to generate university recommendations
+        const recommendedUniversities = sortedSimilarUsers.map(([similarUserId, _]) => {
+            // Logic to map similar user IDs to their most reviewed or preferred university
+            // This is a placeholder. You need to replace it with your own logic.
+            return getPreferredUniversityForUser(similarUserId);
+        });
+
+        // Update the recommendations list in the modal
+        updateRecommendationsList(recommendedUniversities, universityName);
+    }
+    function getPreferredUniversityForUser(userId) {
+        // Placeholder function - implement logic to determine the preferred university for a user
+        // For example, you might look at the universities they have reviewed most positively
+        return 'Example University'; // Replace with actual logic
     }
 
-    function updateRecommendationsList(recommendedUsers) {
-        const recommendationsList = document.getElementById('recommendations-list');
-        recommendationsList.innerHTML = recommendedUsers.map(userId => `<li>${userId}</li>`).join('');
+    function updateRecommendationsList(recommendedUniversities, universityName) {
+        const recommendationsList = document.getElementById('recommendations-list-' + universityName);
+        if (recommendationsList) {
+            recommendationsList.innerHTML = recommendedUniversities.map(university => `<li>${university}</li>`).join('');
+        }
     }
 
     function createModal(name, details) {
