@@ -3,6 +3,15 @@ document.addEventListener('DOMContentLoaded', function () {
     let userUniversityMatrix = {};
     let sentimentChartInstance = null;
     let currentUser = null;
+    let userInteractions = {};
+
+    function handleUniversityCardInteraction(universityId) {
+        // Update the user's interaction history
+        userInteractions[universityId] = (userInteractions[universityId] || 0) + 1;
+
+        // Update recommendations based on new interaction
+        getRecommendations(currentUser, universityId);
+    }
 
     function initializeApp() {
         console.log("Initializing application...");
@@ -91,30 +100,64 @@ document.addEventListener('DOMContentLoaded', function () {
         const details = universitiesData[name];
         createModal(name, details);
         getRecommendations(currentUser, name);
+        handleUniversityCardInteraction(name);  // Update user interactions
+        getRecommendations(currentUser, name);
     }
 
-    function getRecommendations(userId, universityName) {
-        console.log(`Getting recommendations for user: ${userId}`);
-        let recommendedUniversities = userUniversityMatrix[userId]
-            ? calculateRecommendationsForUser(userId)
-            : getInitialRecommendations();
-        console.log("Recommended Universities:", recommendedUniversities);
-        updateRecommendationsList(recommendedUniversities, universityName);
+    function getRecommendations(userId, universityId) {
+        let recommendedUniversities;
+
+        if (Object.keys(userInteractions).length >= 5) {
+            recommendedUniversities = calculatePersonalizedRecommendations(userId);
+        } else {
+            recommendedUniversities = getInitialRecommendations(universityId);
+        }
+
+        updateRecommendationsList(recommendedUniversities, universityId);
     }
-    function getInitialRecommendations() {
-        // Logic for initial recommendations for new users
-        // We'll recommend the top 5 universities based on overall interactions
-        const universityScores = {};
-        Object.values(userUniversityMatrix).forEach(user => {
-            for (let university in user) {
-                universityScores[university] = (universityScores[university] || 0) + user[university];
-            }
+    function calculatePersonalizedRecommendations(userId) {
+        // Gather universities the user has interacted with
+        let interactedUniversities = Object.keys(userInteractions);
+
+        // Calculate average sentiment scores for each interacted university
+        let averageSentiments = interactedUniversities.map(universityId => {
+            let scores = universitiesData[universityId].sentimentScores;
+            let avgPositive = scores.reduce((acc, curr) => acc + curr.positive, 0) / scores.length;
+            let avgNegative = scores.reduce((acc, curr) => acc + curr.negative, 0) / scores.length;
+            return { universityId, avgPositive, avgNegative };
         });
-        return Object.entries(universityScores)
-            .sort((a, b) => b[1] - a[1])
-            .map(entry => entry[0])
-            .slice(0, 5);
+
+        // Sort interacted universities by positive sentiment score
+        averageSentiments.sort((a, b) => b.avgPositive - a.avgPositive);
+
+        // Find universities with similar sentiment scores
+        let recommendedUniversities = [];
+        averageSentiments.forEach(sentiment => {
+            Object.keys(universitiesData).forEach(universityId => {
+                if (!userInteractions[universityId]) {
+                    let scores = universitiesData[universityId].sentimentScores;
+                    let avgPositive = scores.reduce((acc, curr) => acc + curr.positive, 0) / scores.length;
+                    let avgNegative = scores.reduce((acc, curr) => acc + curr.negative, 0) / scores.length;
+
+                    if (Math.abs(avgPositive - sentiment.avgPositive) < 0.1 && Math.abs(avgNegative - sentiment.avgNegative) < 0.1) {
+                        recommendedUniversities.push(universityId);
+                    }
+                }
+            });
+        });
+
+        // Remove duplicates and limit to top 5 recommendations
+        return [...new Set(recommendedUniversities)].slice(0, 5);
     }
+
+
+    function getInitialRecommendations(currentUniversityId) {
+        // Provide general recommendations, excluding the current university
+        return Object.keys(universitiesData)
+            .filter(universityId => universityId !== currentUniversityId)
+            .slice(0, 5);  // Limiting to top 5 recommendations
+    }
+
     function calculateRecommendationsForUser(userId) {
         console.log(`Calculating recommendations for existing user: ${userId}`);
         // Logic to get recommendations for existing users
