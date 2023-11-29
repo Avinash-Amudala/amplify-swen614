@@ -130,9 +130,19 @@ document.addEventListener('DOMContentLoaded', function () {
                     borderWidth: 1
                 }]
             },
-            options: { responsive: true, maintainAspectRatio: false }
+            options: {
+                responsive: true,
+                maintainAspectRatio: false, // Adjust this as needed
+                layout: {
+                    padding: {
+                        top: 15,
+                        bottom: 15
+                    }
+                }
+            }
         });
     }
+
 
     function calculateSentimentCounts(reviews) {
         return reviews.reduce((counts, review) => {

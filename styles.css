@@ -104,7 +104,8 @@ button#searchButton:hover {
     width: 80%; /* Adjust width for better view */
     max-width: 1000px; /* Increase max width for more space */
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    overflow-y: auto; /* Enable vertical scroll inside modal */
+    overflow-y: auto; /* Enable vertical scrolling */
+    max-height: 80vh;
 }
 
 .modal-body {
@@ -123,6 +124,7 @@ button#searchButton:hover {
     justify-content: center;
     max-height: 400px; /* Adjust height for chart */
     overflow: hidden;
+    height: 400px;
 }
 
 .keywords-container, .score-container, .personalized-recommendations {
