@@ -51,8 +51,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function displayUniversityDetails(name) {
         const details = universitiesData[name];
-        getPersonalizeRecommendations(name, details);
+        createModal(name, details); // Move this outside of the getPersonalizeRecommendations function
+
+        getPersonalizeRecommendations(name, details).catch(error => {
+            console.error('Error fetching Personalize recommendations:', error);
+            // Optionally, display an error message or default content in the recommendations list
+            const recommendationsList = document.getElementById('recommendations-list');
+            recommendationsList.innerHTML = '<li>Error fetching recommendations</li>';
+        });
     }
+
 
     function createModal(name, details) {
         const modal = document.createElement('div');
