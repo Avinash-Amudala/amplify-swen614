@@ -84,8 +84,6 @@ button#searchButton:hover {
     }
 }
 
-/* Existing styles... */
-
 .modal {
     display: none;
     position: fixed;
@@ -94,7 +92,7 @@ button#searchButton:hover {
     top: 0;
     width: 100%;
     height: 100%;
-    overflow: auto;
+    overflow: hidden;
     background-color: rgba(0, 0, 0, 0.4);
 }
 
@@ -129,6 +127,18 @@ button#searchButton:hover {
     display: flex;
     flex-direction: column;
     align-items: center;
+    max-height: 300px;
+    overflow: hidden;
+    justify-content: center;
+}
+
+.keywords-section h3 {
+    position: sticky;
+    top: 0;
+    background: white;
+    padding: 10px 0;
+    margin-top: -10px;
+    z-index: 10;
 }
 
 .keywords-container, .score-container, .personalized-recommendations {
@@ -179,6 +189,8 @@ button#searchButton:hover {
     width: 100%;
     text-align: center;
     margin-bottom: 20px;
+    max-height: 150px;
+    overflow: auto;
 }
 
 .personalized-recommendations {
@@ -216,12 +228,13 @@ button#searchButton:hover {
 
 .keywords-container {
     flex: 1;
-    max-height: 60vh;
     padding: 20px;
     background: #f9f9f9;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     overflow-y: auto;
+    max-height: 200px; /* Set max height */
+    overflow-x: hidden; /* Hide horizontal scroll */
 }
 
 .keywords-container h3 {
