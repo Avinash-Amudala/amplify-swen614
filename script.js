@@ -86,17 +86,16 @@ document.addEventListener('DOMContentLoaded', function () {
             .sort((a, b) => b[1] - a[1])
             .slice(1, 6);
 
-        // Map similar users to their preferred universities
-        const recommendedUniversities = sortedSimilarUsers.map(([similarUserId, _]) => getPreferredUniversityForUser(similarUserId)).filter(Boolean);
+        const recommendedUniversities = sortedSimilarUsers.map(([similarUserId, _]) =>
+            getPreferredUniversityForUser(similarUserId)).filter(Boolean);
 
-        // Update recommendations list
         updateRecommendationsList(recommendedUniversities, universityName);
     }
+
     function getPreferredUniversityForUser(userId) {
         let topUniversity = '';
         let topScore = -1;
 
-        // Iterate over each review and find the top university for the user based on positive score
         universitiesData.forEach(review => {
             if (review.USER_ID === userId && review.POSITIVE_SCORE > topScore) {
                 topScore = review.POSITIVE_SCORE;
@@ -106,6 +105,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         return topUniversity;
     }
+
     function updateRecommendationsList(recommendedUniversities, universityName) {
         const recommendationsListId = `recommendations-list-${universityName.replace(/\s+/g, '-')}`;
         const recommendationsList = document.getElementById(recommendationsListId);
