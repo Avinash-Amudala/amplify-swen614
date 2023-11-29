@@ -174,6 +174,7 @@ document.addEventListener('DOMContentLoaded', function () {
             existingModal.remove();
         }
 
+
         // Use a sanitized name for the IDs
         const sanitizedModalName = name.replace(/\s+/g, '-');
 
