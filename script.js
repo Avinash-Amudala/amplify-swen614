@@ -1,8 +1,10 @@
 document.addEventListener('DOMContentLoaded', function () {
     let universitiesData = {};
+    let userSimilarityMatrix = {};
 
     function initializeApp() {
         fetchCsvData('https://uniview-dynamodb.s3.us-east-2.amazonaws.com/interactions.csv', processUniversityData);
+        fetchCsvData('https://uniview-dynamodb.s3.us-east-2.amazonaws.com/matrix.csv', processUserSimilarityMatrix);
     }
 
     function fetchCsvData(csvUrl, callback) {
@@ -11,6 +13,13 @@ document.addEventListener('DOMContentLoaded', function () {
             header: true,
             complete: results => callback(results.data)
         });
+    }
+
+    function processUserSimilarityMatrix(data) {
+        userSimilarityMatrix = data.reduce((acc, row) => {
+            acc[row.USER_ID] = row;
+            return acc;
+        }, {});
     }
 
     function processUniversityData(data) {
@@ -51,14 +60,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function displayUniversityDetails(name) {
         const details = universitiesData[name];
-        createModal(name, details); // Move this outside of the getPersonalizeRecommendations function
+        createModal(name, details);
 
-        getPersonalizeRecommendations(name, details).catch(error => {
-            console.error('Error fetching Personalize recommendations:', error);
-            // Optionally, display an error message or default content in the recommendations list
-            const recommendationsList = document.getElementById('recommendations-list');
-            recommendationsList.innerHTML = '<li>Error fetching recommendations</li>';
+        // Replace the existing Personalize call with our own recommendation logic
+        getMatrixBasedRecommendations(name).catch(error => {
+            console.error('Error generating matrix-based recommendations:', error);
+            // Handle error in UI
         });
+    }
+    function getMatrixBasedRecommendations(userId) {
+        // Assuming 'userId' is the key to look up in the user similarity matrix
+        const userSimilarities = userSimilarityMatrix[userId] || {};
+        const similarUsers = Object.entries(userSimilarities)
+            .sort((a, b) => b[1] - a[1]) // Sort by similarity score
+            .slice(1, 6) // Take top 5 similar users, skipping the first entry (self)
+            .map(([similarUserId, _]) => similarUserId);
+
+        // Update the UI with the recommendations
+        updateRecommendationsList(similarUsers);
+    }
+
+    function updateRecommendationsList(recommendedUsers) {
+        const recommendationsList = document.getElementById('recommendations-list');
+        recommendationsList.innerHTML = recommendedUsers.map(userId => `<li>${userId}</li>`).join('');
     }
 
     function createModal(name, details) {
