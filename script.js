@@ -104,7 +104,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function updateRecommendationsList(recommendedUniversities, universityName) {
-        const recommendationsList = document.getElementById('recommendations-list-' + universityName);
+        // Correctly target the recommendations list within the modal for the specific university
+        const recommendationsListId = `recommendations-list-${universityName.replace(/\s+/g, '-')}`; // Generate a valid ID
+        const recommendationsList = document.getElementById(recommendationsListId);
         if (recommendationsList) {
             recommendationsList.innerHTML = recommendedUniversities.map(university => `<li>${university}</li>`).join('');
         }
@@ -117,43 +119,47 @@ document.addEventListener('DOMContentLoaded', function () {
             existingModal.remove();
         }
 
+        // Use a sanitized name for the IDs
+        const sanitizedModalName = name.replace(/\s+/g, '-');
+
         const modal = document.createElement('div');
         modal.className = 'modal';
         modal.innerHTML = `
-        <div class="modal-content">
-            <span class="close" onclick="this.parentElement.parentElement.style.display='none'">&times;</span>
-            <h2>${name}</h2>
-            <div class="modal-body">
-                <div class="chart-container">
-                    <h3>Sentiment Analysis</h3>
-                    <canvas id="sentimentChart-${name}"></canvas> <!-- Unique ID for each canvas -->
+    <div class="modal-content">
+        <span class="close" onclick="this.parentElement.parentElement.style.display='none'">&times;</span>
+        <h2>${name}</h2>
+        <div class="modal-body">
+            <div class="chart-container">
+                <h3>Sentiment Analysis</h3>
+                <canvas id="sentimentChart-${sanitizedModalName}"></canvas>
+            </div>
+            <div class="keywords-section">
+                <div class="keywords-container">
+                    <h3>Positive Keywords</h3>
+                    <ul>${Array.from(details.positiveKeywords).map(kw => `<li>${kw}</li>`).join('')}</ul>
                 </div>
-                <div class="keywords-section">
-                    <div class="keywords-container">
-                        <h3>Positive Keywords</h3>
-                        <ul>${Array.from(details.positiveKeywords).map(kw => `<li>${kw}</li>`).join('')}</ul>
-                    </div>
-                    <div class="keywords-container">
-                        <h3>Negative Keywords</h3>
-                        <ul>${Array.from(details.negativeKeywords).map(kw => `<li>${kw}</li>`).join('')}</ul>
-                    </div>
-                </div>
-                <div class="score-container">
-                    <h3>Average Sentiment Scores</h3>
-                    <p><strong>Positive:</strong> ${calculateAverageScore(details.sentimentScores, 'positive')}%</p>
-                    <p><strong>Negative:</strong> ${calculateAverageScore(details.sentimentScores, 'negative')}%</p>
-                    <p><strong>Neutral:</strong> ${calculateAverageScore(details.sentimentScores, 'neutral')}%</p>
-                </div>
-                <div class="personalized-recommendations">
-                    <h3>Personalized Recommendations</h3>
-                    <ul id="recommendations-list-${name}"></ul> <!-- Unique ID for recommendations list -->
+                <div class="keywords-container">
+                    <h3>Negative Keywords</h3>
+                    <ul>${Array.from(details.negativeKeywords).map(kw => `<li>${kw}</li>`).join('')}</ul>
                 </div>
             </div>
-        </div>`;
+            <div class="score-container">
+                <h3>Average Sentiment Scores</h3>
+                <p><strong>Positive:</strong> ${calculateAverageScore(details.sentimentScores, 'positive')}%</p>
+                <p><strong>Negative:</strong> ${calculateAverageScore(details.sentimentScores, 'negative')}%</p>
+                <p><strong>Neutral:</strong> ${calculateAverageScore(details.sentimentScores, 'neutral')}%</p>
+            </div>
+            <div class="personalized-recommendations">
+                <h3>Personalized Recommendations</h3>
+                <ul id="recommendations-list-${sanitizedModalName}"></ul>
+            </div>
+        </div>
+    </div>`;
         document.body.appendChild(modal);
-        createSentimentChart(calculateSentimentCounts(details.reviews), `sentimentChart-${name}`);
+        createSentimentChart(calculateSentimentCounts(details.reviews), `sentimentChart-${sanitizedModalName}`);
         modal.style.display = 'block';
     }
+
 
     function getPersonalizeRecommendations(universityName, details) {
         fetch('https://i978sjfn4d.execute-api.us-east-2.amazonaws.com/prod', {
