@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let universitiesData = {};
     let userSimilarityMatrix = {};
     let sentimentChartInstance = null; // Global variable to keep track of the chart instance
+    let currentUser = null;
 
     function initializeApp() {
         fetchCsvData('https://uniview-dynamodb.s3.us-east-2.amazonaws.com/interactions.csv', processUniversityData);
@@ -58,18 +59,27 @@ document.addEventListener('DOMContentLoaded', function () {
             universityList.appendChild(card);
         });
     }
+    function handleLogin() {
+        const username = document.getElementById('usernameInput').value;
+        if (username) {
+            currentUser = username; // Set the current user
+            document.getElementById('loginForm').style.display = 'none'; // Hide login form
+            initializeApp(); // Initialize the app after login
+        } else {
+            alert("Please enter a username.");
+        }
+    }
+    document.getElementById('loginButton').addEventListener('click', handleLogin);
 
     function displayUniversityDetails(name) {
+        if (!currentUser) {
+            alert("Please login first.");
+            return;
+        }
         const details = universitiesData[name];
         createModal(name, details);
-
-        // Replace the existing Personalize call with our own recommendation logic
-        getMatrixBasedRecommendations(name).catch(error => {
-            console.error('Error generating matrix-based recommendations:', error);
-            // Handle error in UI
-        });
+        getMatrixBasedRecommendations(currentUser, name); // Use the current user's ID
     }
-
     function getMatrixBasedRecommendations(userId, universityName) {
         // Get similarity scores for the specified user
         const userSimilarities = userSimilarityMatrix[userId] || {};
