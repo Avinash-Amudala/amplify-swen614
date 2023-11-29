@@ -61,7 +61,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-
     function createModal(name, details) {
         const modal = document.createElement('div');
         modal.className = 'modal';
@@ -69,23 +68,28 @@ document.addEventListener('DOMContentLoaded', function () {
             <div class="modal-content">
                 <span class="close" onclick="this.parentElement.parentElement.style.display='none'">&times;</span>
                 <h2>${name}</h2>
-                <div class="content-container">
+                <div class="modal-body">
                     <div class="chart-container">
+                        <h3>Sentiment Analysis</h3>
                         <canvas id="sentimentChart"></canvas>
                     </div>
-                    <div class="keywords-container">
-                        <h3>Positive Keywords</h3>
-                        <ul>${Array.from(details.positiveKeywords).map(kw => `<li>${kw}</li>`).join('')}</ul>
-                        <h3>Negative Keywords</h3>
-                        <ul>${Array.from(details.negativeKeywords).map(kw => `<li>${kw}</li>`).join('')}</ul>
+                    <div class="keywords-section">
+                        <div class="keywords-container">
+                            <h3>Positive Keywords</h3>
+                            <ul>${Array.from(details.positiveKeywords).map(kw => `<li>${kw}</li>`).join('')}</ul>
+                        </div>
+                        <div class="keywords-container">
+                            <h3>Negative Keywords</h3>
+                            <ul>${Array.from(details.negativeKeywords).map(kw => `<li>${kw}</li>`).join('')}</ul>
+                        </div>
                     </div>
                     <div class="score-container">
                         <h3>Average Sentiment Scores</h3>
-                        <p>Positive: ${calculateAverageScore(details.sentimentScores, 'positive')}%</p>
-                        <p>Negative: ${calculateAverageScore(details.sentimentScores, 'negative')}%</p>
-                        <p>Neutral: ${calculateAverageScore(details.sentimentScores, 'neutral')}%</p>
+                        <p><strong>Positive:</strong> ${calculateAverageScore(details.sentimentScores, 'positive')}%</p>
+                        <p><strong>Negative:</strong> ${calculateAverageScore(details.sentimentScores, 'negative')}%</p>
+                        <p><strong>Neutral:</strong> ${calculateAverageScore(details.sentimentScores, 'neutral')}%</p>
                     </div>
-                    <div id="personalized-recommendations">
+                    <div class="personalized-recommendations">
                         <h3>Personalized Recommendations</h3>
                         <ul id="recommendations-list"></ul>
                     </div>
@@ -95,6 +99,7 @@ document.addEventListener('DOMContentLoaded', function () {
         createSentimentChart(calculateSentimentCounts(details.reviews), 'sentimentChart');
         modal.style.display = 'block';
     }
+
 
     function getPersonalizeRecommendations(universityName, details) {
         fetch('https://i978sjfn4d.execute-api.us-east-2.amazonaws.com/prod', {

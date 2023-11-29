@@ -109,6 +109,38 @@ button#searchButton:hover {
     display: flex;
     flex-direction: column;
 }
+.modal-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.chart-container {
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 20px;
+}
+
+.keywords-section {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.keywords-container {
+    flex-basis: 45%;
+}
+
+.score-container {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.personalized-recommendations {
+    width: 100%;
+}
 
 .close {
     color: #aaa;
