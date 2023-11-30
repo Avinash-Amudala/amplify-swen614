@@ -287,10 +287,10 @@ button#searchButton:hover {
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    width: 80%; /* Width adjusted for better layout */
-    max-width: 800px; /* Increased max-width for larger screens */
+    width: 80%;
+    max-width: 600px; /* Adjusted for better layout */
     margin: 2% auto;
-    overflow-y: auto; /* Allow vertical scrolling inside the modal */
+    overflow: auto; /* Enables scrolling if content overflows */
 }
 
 .modal-body {
@@ -298,7 +298,7 @@ button#searchButton:hover {
     grid-template-columns: 1fr;
     gap: 20px;
     align-items: start;
-    height: 100%; /* Full height */
+    overflow: auto; /* Allows scrolling within the modal body */
 }
 .chart-container,
 .keywords-section,
@@ -311,16 +311,14 @@ button#searchButton:hover {
 }
 
 .chart-container {
-    padding: 15px;
     background: #fff;
+    padding: 15px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* Ensures no overflow */
+    height: 60%; /* Adjust height as percentage */
     margin-top: 10px;
-    height: auto; /* Remove fixed height */
-    min-height: 300px; /* Set a minimum height */
-    overflow: visible; /* Ensure the chart is fully visible */
 }
-
 .keywords-container{
     width: 100%; /* Full width within grid */
 }
@@ -377,13 +375,13 @@ button#searchButton:hover {
 
 @media (max-width: 768px) {
     .chart-container {
-        min-height: 250px; /* Adjust for medium screens */
+        max-height: 250px; /* Smaller height for smaller screens */
     }
 }
 
 @media (max-width: 480px) {
     .chart-container {
-        min-height: 200px; /* Adjust for small screens */
+        max-height: 200px; /* Even smaller height for very small screens */
     }
 }
 @media (max-width: 768px) {
