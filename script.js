@@ -363,7 +363,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 layout: {
                     padding: {
                         top: 15,
-                        bottom: 30
+                        bottom: 15
                     }
                 }
             }
