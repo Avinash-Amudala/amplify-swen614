@@ -357,16 +357,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     borderWidth: 1
                 }]
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                layout: {
-                    padding: {
-                        top: 15,
-                        bottom: 15
-                    }
-                }
-            }
         });
     }
     function calculateSentimentCounts(reviews) {

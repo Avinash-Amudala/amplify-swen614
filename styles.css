@@ -469,7 +469,7 @@ button#searchButton:hover {
     border-radius: 5px;
     width: calc(50% - 5px);
     text-align: center;
-    color: #fff; /* Text color */
+    color: #fff;
 }
 
 @media (max-width: 768px) {
