@@ -7,7 +7,6 @@ body {
     background: #e9edf0;
 }
 
-/* Header Styles */
 header {
     display: flex;
     align-items: center;
@@ -22,15 +21,15 @@ header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 100%;
+    width: 100%; /* Ensure the header content takes the full width */
 }
 
 .app-name {
-    font-size: 2rem;
+    font-size: 2rem; /* Adjust size as needed */
     color: #fff;
-    text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.2);
-    flex-grow: 1;
-    text-align: center;
+    text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.2); /* Create 3D effect */
+    flex-grow: 1; /* Allows the text to take the available space */
+    text-align: center; /* Center the text */
 }
 
 .logo {
@@ -38,24 +37,50 @@ header {
     margin-right: 20px;
 }
 
+/* Right-aligned section for welcome message and logout button */
 .right-section {
     display: flex;
     align-items: center;
 }
 
 #welcomeMessage {
-    margin-right: 20px;
+    margin-right: 20px; /* Spacing between message and button */
 }
 
-/* Button Styles */
 button {
-    transition: all 0.3s ease;
+    transition: all 0.3s ease; /* Smooth transition for buttons */
 }
 
 button:hover {
-    transform: scale(1.05);
+    transform: scale(1.05); /* Slight increase in size on hover */
 }
 
+/* Responsive Design Adjustments */
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .logo {
+        margin-bottom: 10px; /* Space between logo and welcome message */
+    }
+
+    .university-card {
+        width: calc(50% - 1rem); /* Adjust width for medium screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .university-card {
+        width: 100%; /* Full width for small screens */
+        margin: 10px 0; /* Adjust margin for stacked layout */
+    }
+
+    .modal-content, .login-box {
+        width: 95%; /* Full width with slight margin */
+    }
+}
 #logoutButton {
     padding: 0.5rem 1rem;
     color: white;
@@ -63,13 +88,16 @@ button:hover {
     border-radius: 5px;
     cursor: pointer;
     background-color: #EF476F;
+    transition: background-color 0.3s;
 }
 
 #logoutButton:hover {
     background-color: #FF6F91;
 }
+body, .login-box, .university-card, .modal-content, .keywords-container {
+    border-radius: 10px;
+}
 
-/* Login Modal Styles */
 .login-modal {
     display: flex;
     position: fixed;
@@ -89,7 +117,7 @@ button:hover {
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     text-align: center;
-    width: 350px;
+    width: 350px; /* Increased width */
 }
 
 .login-box-header {
@@ -149,7 +177,6 @@ button:hover {
     transition: filter 0.3s;
 }
 
-/* Search Container Styles */
 .search-container {
     display: flex;
     justify-content: center;
@@ -183,7 +210,6 @@ button#searchButton:hover {
     background: #004953;
 }
 
-/* University List Styles */
 .university-list {
     display: flex;
     flex-wrap: wrap;
@@ -229,7 +255,18 @@ button#searchButton:hover {
     border: 1px solid #ddd;
 }
 
-/* Modal Styles */
+@media (max-width: 768px) {
+    .university-card {
+        width: calc(50% - 2rem);
+    }
+}
+
+@media (max-width: 480px) {
+    .university-card {
+        width: 100%;
+    }
+}
+
 .modal {
     display: none;
     position: fixed;
@@ -249,14 +286,14 @@ button#searchButton:hover {
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     width: 80%;
-    max-width: 600px;
-    margin: auto;
-    overflow: auto;
+    max-width: 600px; /* Adjusted for better layout */
+    margin: 2% auto;
+    overflow: auto; /* Enables scrolling if content overflows */
 }
 
 .modal-body {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* Single column layout */
     gap: 20px;
     align-items: start;
 }
@@ -326,26 +363,36 @@ button#searchButton:hover {
     border-radius: 5px;
 }
 
-/* Responsive Design Adjustments */
 @media (max-width: 768px) {
-    .header-content, .modal-content, .login-box {
-        flex-direction: column;
-        align-items: center;
+    .modal-content {
         width: 90%;
     }
+}
 
-    .university-card {
-        width: calc(50% - 1rem);
+@media (max-width: 480px) {
+    .modal-content {
+        width: 95%;
+        max-width: none; /* Allows modal to fit smaller screens */
+    }
+}
+@media (max-width: 768px) {
+    .modal-content {
+        width: 85%;
+    }
+
+    .modal-body {
+        grid-template-columns: 1fr;
     }
 
     .chart-container {
+        grid-column: auto;
         max-height: 300px;
     }
 }
 
 @media (max-width: 480px) {
-    .university-card, .modal-content, .login-box {
-        width: 100%;
+    .modal-content {
+        width: 95%;
     }
 
     .chart-container {
@@ -353,7 +400,6 @@ button#searchButton:hover {
     }
 }
 
-/* Close Button Styles */
 .close {
     color: #aaa;
     float: right;
@@ -366,7 +412,7 @@ button#searchButton:hover {
 .close:focus {
     color: black;
 }
-/* Score Container Styles */
+
 .score-container {
     background: #fff;
     padding: 15px;
@@ -398,7 +444,14 @@ button#searchButton:hover {
     border-radius: 5px;
 }
 
-/* Chart Container Styles */
+.content-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    padding: 20px;
+    flex: 1;
+}
+
 .chart-container {
     background: #fff;
     padding: 15px;
@@ -408,8 +461,16 @@ button#searchButton:hover {
     overflow: hidden;
     margin-top: 10px;
 }
+.keywords-container {
+    position: relative;
+    padding: 15px;
+    padding-top: 30px;
+    max-height: 250px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border: 1px solid #ddd;
+}
 
-/* Keywords Container Styles */
 .keywords-container {
     background: #fff;
     padding: 15px;
@@ -430,4 +491,21 @@ button#searchButton:hover {
     padding: 5px 10px;
     border-radius: 5px;
 }
+.video-section {
+    position: relative;
+    width: 100%; /* Full width of the page */
+    height: 400px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
 
+.stock-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures video covers the full width */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
