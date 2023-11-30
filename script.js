@@ -360,6 +360,7 @@ document.addEventListener('DOMContentLoaded', function () {
         updateRecommendationsList(recentInteractions, currentUser);
     }
 
+
     function createSentimentChart(counts, canvasId) {
         if (sentimentChartInstance) {
             sentimentChartInstance.destroy();
@@ -379,8 +380,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 }]
             },
             options: {
-                responsive: true,
-                maintainAspectRatio: false,
+                responsive: true, // Chart will respond to container size
+                maintainAspectRatio: false, // Do not maintain the aspect ratio
                 layout: {
                     padding: {
                         top: 15,
@@ -389,7 +390,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 },
                 plugins: {
                     legend: {
-                        position: 'top'
+                        position: 'top' // Adjust legend position as needed
                     }
                 }
             }
