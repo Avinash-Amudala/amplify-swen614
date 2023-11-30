@@ -489,13 +489,7 @@ button#searchButton:hover {
     flex: 1;
 }
 
-.chart-container {
-    padding: 15px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    max-height: 400px;
-    overflow: hidden;
-    margin-top: 10px;
-}
+
 canvas{
     margin-top: -30px;
 }
