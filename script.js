@@ -12,13 +12,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const searchBar = document.getElementById('searchBar');
     const header = document.querySelector('header');
 
-    function logout() {
-        localStorage.removeItem('currentUser');
-        currentUser = null;
-        showLoginModal();
-        // Additional reset actions as needed
-    }
-
     function showLoginModal() {
         loginModal.style.display = 'flex';
         app.style.filter = 'blur(3px)';
@@ -124,15 +117,20 @@ document.addEventListener('DOMContentLoaded', function () {
         displayUniversityCards();
     }
 
-    function displayUniversityCards() {
+    function displayUniversityCards(filteredNames) {
         const universityList = document.getElementById('universityList');
         universityList.innerHTML = '';
-        Object.keys(universitiesData).forEach(name => {
+
+        // Determine which names to show: either the filtered names or all names
+        const namesToShow = filteredNames || Object.keys(universitiesData);
+
+        namesToShow.forEach(name => {
+            const details = universitiesData[name];
             const card = document.createElement('div');
             card.className = 'university-card';
 
             const uniImage = document.createElement('img');
-            uniImage.src = 'book-303927_1280.png';
+            uniImage.src = details.logoUrl || 'default_logo.png'; // Replace 'default_logo.png' with your default image path
             uniImage.alt = name;
             uniImage.className = 'university-logo';
 
@@ -143,6 +141,7 @@ document.addEventListener('DOMContentLoaded', function () {
             card.appendChild(uniImage);
             card.appendChild(uniName);
             card.onclick = () => displayUniversityDetails(name);
+
             universityList.appendChild(card);
         });
     }
@@ -379,6 +378,5 @@ document.addEventListener('DOMContentLoaded', function () {
         const filteredNames = Object.keys(universitiesData).filter(name => name.toLowerCase().includes(searchTerm));
         displayUniversityCards(filteredNames);
     });
-
-    initializeApp();
+        initializeApp();
 });
