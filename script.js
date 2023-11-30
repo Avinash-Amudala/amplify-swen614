@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', function () {
             card.className = 'university-card';
 
             const uniImage = document.createElement('img');
-            uniImage.src = 'path_to_university_logo.png'; // Replace with actual image path
+            uniImage.src = 'book-303927_1280.png';
             uniImage.alt = name;
             uniImage.className = 'university-logo';
 
