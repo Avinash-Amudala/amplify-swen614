@@ -1,14 +1,16 @@
 document.addEventListener('DOMContentLoaded', function () {
+    let currentUser = localStorage.getItem('currentUser');
+
+    if (!currentUser) {
+        // Redirect to login page if not logged in
+        window.location.href = 'login.html';
+        return; // Stop further script execution
+    }
+
     let universitiesData = {};
     let personalizeRecommendations = {};
     let sentimentChartInstance = null;
-    let currentUser = localStorage.getItem('currentUser');
     let userInteractions = {};
-
-    if (!currentUser) {
-        window.location.href = 'login.html';
-        return;
-    }
 
     function handleUniversityCardInteraction(universityId) {
         // Update the user's interaction history
