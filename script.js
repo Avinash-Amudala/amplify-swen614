@@ -16,6 +16,15 @@ document.addEventListener('DOMContentLoaded', function () {
         loginModal.style.display = 'flex';
         app.style.filter = 'blur(3px)';
     }
+    function logout() {
+        localStorage.removeItem('currentUser');
+        currentUser = null;
+        document.getElementById('welcomeMessage').textContent = '';
+        document.getElementById('logoutButton').style.display = 'none';
+        showLoginModal();
+    }
+
+    window.logout = logout;
 
     function hideLoginModal() {
         loginModal.style.display = 'none';
@@ -43,13 +52,12 @@ document.addEventListener('DOMContentLoaded', function () {
             logoutButton.addEventListener('click', logout);
         }
     }
-
-    function logout() {
-        localStorage.removeItem('currentUser');
-        currentUser = null;
-        document.getElementById('welcomeMessage').textContent = '';
-        document.getElementById('logoutButton').style.display = 'none';
-        showLoginModal();
+    function setupSearchListener() {
+        document.getElementById('searchBar').addEventListener('input', function (e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredNames = Object.keys(universitiesData).filter(name => name.toLowerCase().includes(searchTerm));
+            displayUniversityCards(filteredNames);
+        });
     }
 
     loginButton.addEventListener('click', function () {
