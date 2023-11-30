@@ -5,11 +5,9 @@ document.addEventListener('DOMContentLoaded', function () {
     let sentimentChartInstance = null;
     let userInteractions = {};
 
-    // Initially show the login modal and blur the app
     document.getElementById('loginModal').style.display = 'flex';
     document.getElementById('app').style.filter = 'blur(3px)';
 
-    // If the user is already logged in, hide the modal and initialize the app
     if (currentUser) {
         hideLoginModal();
         initializeApp();
@@ -58,15 +56,12 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     function handleUniversityCardInteraction(universityId) {
-        // Update the user's interaction history
         userInteractions[universityId] = (userInteractions[universityId] || 0) + 1;
 
-        // Update recommendations based on new interaction
         getRecommendations(currentUser, universityId);
     }
 
     function initializeApp() {
-        // Only run this on the main page
         if (document.getElementById('searchBar')) {
             console.log("Initializing application...");
             fetchCsvData('https://uniview-dynamodb.s3.us-east-2.amazonaws.com/interactions.csv', processUniversityData);
@@ -165,10 +160,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function calculatePersonalizedRecommendations(userId) {
-        // Gather universities the user has interacted with
         let interactedUniversities = Object.keys(userInteractions);
 
-        // Calculate average sentiment scores for each interacted university
         let averageSentiments = interactedUniversities.map(universityId => {
             let scores = universitiesData[universityId].sentimentScores;
             let avgPositive = scores.reduce((acc, curr) => acc + curr.positive, 0) / scores.length;
@@ -176,10 +169,8 @@ document.addEventListener('DOMContentLoaded', function () {
             return { universityId, avgPositive, avgNegative };
         });
 
-        // Sort interacted universities by positive sentiment score
         averageSentiments.sort((a, b) => b.avgPositive - a.avgPositive);
 
-        // Find universities with similar sentiment scores
         let recommendedUniversities = [];
         averageSentiments.forEach(sentiment => {
             Object.keys(universitiesData).forEach(universityId => {
@@ -195,13 +186,11 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
 
-        // Remove duplicates and limit to top 5 recommendations
         return [...new Set(recommendedUniversities)].slice(0, 5);
     }
 
 
     function getInitialRecommendations(currentUniversityId) {
-        // Provide initial recommendations based on Personalize data
         let recommendations = personalizeRecommendations[currentUniversityId]?.recommendedItems;
         return recommendations ? recommendations.slice(0, 5) : []; // Limit to top 5
     }
@@ -236,9 +225,8 @@ document.addEventListener('DOMContentLoaded', function () {
         let topUniversity = '';
         let topScore = -1;
 
-        // Convert the universitiesData object's values to an array and iterate over it
         Object.values(universitiesData).forEach(university => {
-            // Assuming each university is an object with a 'reviews' array
+
             university.reviews.forEach(review => {
                 if (review.USER_ID === userId && review.POSITIVE_SCORE > topScore) {
                     topScore = review.POSITIVE_SCORE;
@@ -256,7 +244,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const recommendationsList = document.getElementById(recommendationsListId);
         if (recommendationsList) {
             if (recommendedUniversities.length > 0) {
-                recommendationsList.innerHTML = ''; // Clear existing recommendations
+                recommendationsList.innerHTML = '';
                 recommendedUniversities.forEach(recommendedUniversity => {
                     // Create a card for each recommended university
                     const card = document.createElement('div');
