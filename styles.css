@@ -313,12 +313,14 @@ button#searchButton:hover {
 .chart-container {
     background: #fff;
     padding: 15px;
+    padding-bottom: 30px; /* Extra space for the bottom of the chart */
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    height: 700px;
-    overflow: hidden;
+    height: 500px; /* Increased height */
+    overflow: visible; /* Adjust as needed */
     margin-top: 10px;
 }
+
 
 .keywords-container,
 .score-container {
@@ -464,12 +466,12 @@ button#searchButton:hover {
 .personalized-recommendations li {
     background: url('book-303927_1280.png') no-repeat center center;
     background-size: cover;
-    margin-bottom: 5px;
+    color: white;
+    text-align: center;
     padding: 10px;
     border-radius: 5px;
-    width: calc(50% - 5px);
-    text-align: center;
-    color: #fff;
+    width: calc(50% - 5px); /* Two cards per row */
+    margin-bottom: 10px;
 }
 
 @media (max-width: 768px) {
@@ -477,6 +479,7 @@ button#searchButton:hover {
         width: 100%; /* Full width for smaller screens */
     }
 }
+
 
 .content-container {
     display: flex;
