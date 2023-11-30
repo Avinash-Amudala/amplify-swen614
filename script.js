@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', function () {
             card.className = 'university-card';
 
             const uniImage = document.createElement('img');
-            uniImage.src = details.logoUrl || 'default_logo.png'; // Replace 'default_logo.png' with your default image path
+            uniImage.src = details.logoUrl || 'book-303927_1280.png';
             uniImage.alt = name;
             uniImage.className = 'university-logo';
 
