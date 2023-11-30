@@ -270,44 +270,58 @@ button#searchButton:hover {
 .modal {
     display: none;
     position: fixed;
-    z-index: 1;
+    z-index: 1000;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.6);
+    align-items: center;
+    justify-content: center;
 }
 
 .modal-content {
-    background-color: #fefefe;
-    margin: 2% auto;
+    background-color: #fff;
     padding: 20px;
-    border-radius: 8px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 1000px;
+    border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    overflow-y: auto;
-    max-height: 80vh;
+    width: 80%;
+    max-width: 600px; /* Adjusted for better layout */
+    margin: 2% auto;
+    overflow: auto; /* Enables scrolling if content overflows */
 }
 
 .modal-body {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr; /* Single column layout */
     gap: 20px;
     align-items: start;
-    margin-top: 20px;
+}
+
+.chart-container,
+.keywords-section,
+.score-container,
+.personalized-recommendations {
+    background: #e9edf0;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .chart-container {
-    grid-column: 1 / -1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    max-height: 400px;
+    max-height: 400px; /* Adjusted height */
     overflow: hidden;
-    height: 400px;
+}
+.keywords-container,
+.score-container {
+    width: 100%; /* Full width within grid */
+}
+.keywords-container ul,
+.score-container ul,
+.personalized-recommendations ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 .keywords-container, .score-container, .personalized-recommendations {
@@ -343,12 +357,24 @@ button#searchButton:hover {
 }
 
 .keywords-container li {
-    background: #e4e4e4;
+    background: #f0f4f8;
     margin-bottom: 5px;
     padding: 5px 10px;
     border-radius: 5px;
 }
 
+@media (max-width: 768px) {
+    .modal-content {
+        width: 90%;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-content {
+        width: 95%;
+        max-width: none; /* Allows modal to fit smaller screens */
+    }
+}
 @media (max-width: 768px) {
     .modal-content {
         width: 85%;
@@ -379,6 +405,12 @@ button#searchButton:hover {
     float: right;
     font-size: 28px;
     font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
 }
 
 .score-container {
@@ -391,13 +423,6 @@ button#searchButton:hover {
 
 .personalized-recommendations {
     width: 100%;
-}
-
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
 }
 
 .content-container {
