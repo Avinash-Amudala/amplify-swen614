@@ -35,7 +35,6 @@ header {
 }
 
 #app {
-    /* If you want to blur the background content */
     filter: blur(0);
     transition: filter 0.3s;
 }
@@ -126,28 +125,28 @@ button#searchButton:hover {
     padding: 20px;
     border-radius: 8px;
     border: 1px solid #888;
-    width: 80%; /* Adjust width for better view */
-    max-width: 1000px; /* Increase max width for more space */
+    width: 80%;
+    max-width: 1000px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    overflow-y: auto; /* Enable vertical scrolling */
+    overflow-y: auto;
     max-height: 80vh;
 }
 
 .modal-body {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Two columns layout */
+    grid-template-columns: repeat(2, 1fr);
     gap: 20px;
     align-items: start;
     margin-top: 20px;
 }
 
 .chart-container {
-    grid-column: 1 / -1; /* Chart spans both columns */
+    grid-column: 1 / -1;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    max-height: 400px; /* Adjust height for chart */
+    max-height: 400px;
     overflow: hidden;
     height: 400px;
 }
@@ -197,12 +196,12 @@ button#searchButton:hover {
     }
 
     .modal-body {
-        grid-template-columns: 1fr; /* Single column for smaller screens */
+        grid-template-columns: 1fr;
     }
 
     .chart-container {
         grid-column: auto;
-        max-height: 300px; /* Adjust height for smaller screens */
+        max-height: 300px;
     }
 }
 
@@ -256,13 +255,13 @@ button#searchButton:hover {
 }
 
 .keywords-container {
-    position: relative; /* Set relative positioning */
+    position: relative;
     padding: 15px;
-    padding-top: 30px; /* Add padding to the top */
-    max-height: 250px; /* Increase max height */
-    overflow-y: auto; /* Allow scrolling */
-    overflow-x: hidden; /* Hide horizontal scroll */
-    border: 1px solid #ddd; /* Add border for clear separation */
+    padding-top: 30px;
+    max-height: 250px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border: 1px solid #ddd;
 }
 
 .keywords-container h3 {
