@@ -5,11 +5,17 @@ document.addEventListener('DOMContentLoaded', function () {
     let sentimentChartInstance = null;
     let userInteractions = {};
 
+    // Initially show the login modal and blur the app
+    document.getElementById('loginModal').style.display = 'flex';
+    document.getElementById('app').style.filter = 'blur(3px)';
+
+    // If the user is already logged in, hide the modal and initialize the app
     if (currentUser) {
         hideLoginModal();
-    } else {
-        showLoginModal();
+        initializeApp();
     }
+    document.getElementById('loginButton').addEventListener('click', attemptLogin);
+
     function attemptLogin() {
         const username = document.getElementById('usernameInput').value;
         if (username) {
@@ -20,7 +26,6 @@ document.addEventListener('DOMContentLoaded', function () {
             alert("Please enter a username.");
         }
     }
-
     function hideLoginModal() {
         document.getElementById('loginModal').style.display = 'none';
         document.getElementById('app').style.filter = 'none';
