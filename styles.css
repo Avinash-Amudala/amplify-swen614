@@ -316,7 +316,7 @@ button#searchButton:hover {
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     overflow: visible;
-    height: 300px; /* Set a fixed height */
+    height: 600px; /* Set a fixed height */
     margin-top: 10px;
 }
 
