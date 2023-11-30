@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     let universitiesData = {};
-    let userUniversityMatrix = {};
+    let personalizeRecommendations = {};
     let sentimentChartInstance = null;
     let currentUser = null;
     let userInteractions = {};
@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function initializeApp() {
         console.log("Initializing application...");
         fetchCsvData('https://uniview-dynamodb.s3.us-east-2.amazonaws.com/interactions.csv', processUniversityData);
-        fetchCsvData('https://uniview-dynamodb.s3.us-east-2.amazonaws.com/matrix.csv', processUserUniversityMatrix);
+        fetchJsonData('https://uniview-dynamodb.s3.us-east-2.amazonaws.com/personalize_recommendations.json', processPersonalizeRecommendations);
     }
 
     function fetchCsvData(csvUrl, callback) {
@@ -28,19 +28,16 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    function processUserUniversityMatrix(data) {
-        console.log("Processing user-university matrix...");
-        userUniversityMatrix = data.reduce((acc, row) => {
-            let userId = row.USER_ID;  // Ensure this matches the actual column name in your CSV
-            if (userId) {
-                acc[userId] = row;
-                delete acc[userId].USER_ID;  // Remove USER_ID to keep only university interactions
-            } else {
-                console.log("Missing USER_ID in row:", row);  // Log any rows missing USER_ID
-            }
-            return acc;
-        }, {});
-        console.log("Processed userUniversityMatrix:", userUniversityMatrix);
+    function fetchJsonData(jsonUrl, callback) {
+        console.log(`Fetching data from: ${jsonUrl}`);
+        fetch(jsonUrl)
+            .then(response => response.json())
+            .then(data => callback(data))
+            .catch(error => console.error('Error fetching JSON:', error));
+    }
+    function processPersonalizeRecommendations(data) {
+        console.log("Processing Personalize recommendations...");
+        personalizeRecommendations = data;
     }
 
     function processUniversityData(data) {
@@ -115,6 +112,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         updateRecommendationsList(recommendedUniversities, universityId);
     }
+
     function calculatePersonalizedRecommendations(userId) {
         // Gather universities the user has interacted with
         let interactedUniversities = Object.keys(userInteractions);
@@ -152,10 +150,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     function getInitialRecommendations(currentUniversityId) {
-        // Provide general recommendations, excluding the current university
-        return Object.keys(universitiesData)
-            .filter(universityId => universityId !== currentUniversityId)
-            .slice(0, 5);  // Limiting to top 5 recommendations
+        // Provide initial recommendations based on Personalize data
+        let recommendations = personalizeRecommendations[currentUniversityId]?.recommendedItems;
+        return recommendations ? recommendations.slice(0, 5) : []; // Limit to top 5
     }
 
     function calculateRecommendationsForUser(userId) {
