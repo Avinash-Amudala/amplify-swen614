@@ -11,7 +11,7 @@ header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1rem 2rem; /* Adjust padding for spacing */
+    padding: 1rem 2rem;
     background: #005f73;
     color: #fff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -20,7 +20,16 @@ header {
 .header-content {
     display: flex;
     align-items: center;
-    flex-grow: 1;
+    justify-content: space-between;
+    width: 100%; /* Ensure the header content takes the full width */
+}
+
+.app-name {
+    font-size: 2rem; /* Adjust size as needed */
+    color: #fff;
+    text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.2); /* Create 3D effect */
+    flex-grow: 1; /* Allows the text to take the available space */
+    text-align: center; /* Center the text */
 }
 .header-content::before {
     content: 'UNIVIEW';
