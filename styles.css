@@ -311,12 +311,15 @@ button#searchButton:hover {
 }
 
 .chart-container {
-    max-height: 400px; /* Adjusted height */
-    overflow: hidden;
+    background: #fff;
     padding: 15px;
-    padding-bottom: 30px; /* Increase bottom padding to prevent cutoff */
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    height: 450px; /* Increased height */
+    overflow: hidden;
     margin-top: 10px;
 }
+
 .keywords-container,
 .score-container {
     width: 100%; /* Full width within grid */
@@ -438,16 +441,41 @@ button#searchButton:hover {
 }
 
 /* Personalized Recommendation Cards */
+.personalized-recommendations {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap; /* Allow cards to wrap */
+    justify-content: center; /* Center cards */
+    gap: 10px; /* Spacing between cards */
+}
+
 .personalized-recommendations ul {
     list-style: none;
     padding: 0;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap; /* Allow list items to wrap */
 }
 
 .personalized-recommendations li {
-    background: #e4e4e4;
+    background: url('book-303927_1280.png') no-repeat center center;
+    background-size: cover;
     margin-bottom: 5px;
-    padding: 5px 10px;
+    padding: 10px;
     border-radius: 5px;
+    width: calc(50% - 5px);
+    text-align: center;
+    color: #fff; /* Text color */
+}
+
+@media (max-width: 768px) {
+    .personalized-recommendations li {
+        width: 100%; /* Full width for smaller screens */
+    }
 }
 
 .content-container {
@@ -474,8 +502,9 @@ button#searchButton:hover {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin-top: 10px;
     position: relative; /* Needed for proper stacking context */
-    padding-top: 40px;
+    padding-top: 40px; /* Increased top padding */
 }
+
 .keywords-container h3 {
     position: absolute;
     top: 0;
@@ -485,6 +514,7 @@ button#searchButton:hover {
     padding: 10px 15px;
     margin-top: -20px; /* Adjust this value as needed */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 10; /* Ensure header is above the content */
 }
 .keywords-container ul {
     list-style: none;
