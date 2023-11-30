@@ -349,10 +349,6 @@ document.addEventListener('DOMContentLoaded', function () {
             updateDynamicRecommendations();
         }
     }
-    card.onclick = () => {
-        displayUniversityDetails(name);
-        updateUserInteractions(name);
-    };
     function updateDynamicRecommendations() {
         const recentInteractions = Object.entries(userInteractions)
             .sort((a, b) => b[1] - a[1]) // Sort by interaction count
