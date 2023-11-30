@@ -22,6 +22,17 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log("Initializing application...");
         fetchCsvData('https://uniview-dynamodb.s3.us-east-2.amazonaws.com/interactions.csv', processUniversityData);
         fetchJsonData('https://uniview-dynamodb.s3.us-east-2.amazonaws.com/personalize_recommendations.json', processPersonalizeRecommendations);
+        setupSearchListener();
+    }
+    function setupSearchListener() {
+        const searchBar = document.getElementById('searchBar');
+        if (searchBar) {
+            searchBar.addEventListener('input', function (e) {
+                const searchTerm = e.target.value.toLowerCase();
+                const filteredNames = Object.keys(universitiesData).filter(name => name.toLowerCase().includes(searchTerm));
+                displayUniversityCards(filteredNames);
+            });
+        }
     }
 
     function fetchCsvData(csvUrl, callback) {
