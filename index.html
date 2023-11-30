@@ -23,17 +23,24 @@
             <div id="welcomeMessage">Welcome, <span id="usernameDisplay"></span>!</div>
             <button id="logoutButton" onclick="logout()">Logout</button>
         </div>
+    </header>
+    <div class="video-section">
+        <!-- Stock video container -->
+        <video autoplay loop muted class="stock-video">
+            <source src="path_to_stock_video.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <div class="search-container">
         <input type="text" id="searchBar" placeholder="Search for a university..." />
         <button id="searchButton">🔍 Search</button>
-    </header>
-
+    </div>
 
     <main>
-        <section id="universityList" class="university-list">
-        </section>
-        <section id="universityDetails" class="university-details">
-        </section>
+        <section id="universityList" class="university-list"></section>
+        <section id="universityDetails" class="university-details"></section>
     </main>
+
 </div>
 <script type="module" src="script.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
