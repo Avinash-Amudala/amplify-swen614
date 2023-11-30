@@ -148,11 +148,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
             card.appendChild(uniImage);
             card.appendChild(uniName);
-            card.onclick = () => displayUniversityDetails(name);
+
+            // Set onclick event here
+            card.onclick = () => {
+                displayUniversityDetails(name);
+                updateUserInteractions(name);
+            };
 
             universityList.appendChild(card);
         });
     }
+
 
     function displayUniversityDetails(name) {
         const details = universitiesData[name];
