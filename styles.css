@@ -295,11 +295,11 @@ button#searchButton:hover {
 
 .modal-body {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* Single column layout */
     gap: 20px;
     align-items: start;
-    overflow: auto; /* Allows scrolling within the modal body */
 }
+
 .chart-container,
 .keywords-section,
 .score-container,
@@ -313,12 +313,15 @@ button#searchButton:hover {
 .chart-container {
     background: #fff;
     padding: 15px;
+    padding-bottom: 30px; /* Extra space for the bottom of the chart */
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    overflow: hidden; /* Ensures no overflow */
-    height: 60%; /* Adjust height as percentage */
+    height: 500px; /* Increased height */
+    overflow: visible; /* Adjust as needed */
     margin-top: 10px;
 }
+
+
 .keywords-container{
     width: 100%; /* Full width within grid */
 }
@@ -374,14 +377,15 @@ button#searchButton:hover {
 }
 
 @media (max-width: 768px) {
-    .chart-container {
-        max-height: 250px; /* Smaller height for smaller screens */
+    .modal-content {
+        width: 90%;
     }
 }
 
 @media (max-width: 480px) {
-    .chart-container {
-        max-height: 200px; /* Even smaller height for very small screens */
+    .modal-content {
+        width: 95%;
+        max-width: none; /* Allows modal to fit smaller screens */
     }
 }
 @media (max-width: 768px) {
