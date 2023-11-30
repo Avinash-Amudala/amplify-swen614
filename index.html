@@ -18,9 +18,15 @@
 </div>
 <div id="app">
     <header>
+        <div class="header-content">
+            <img src="path_to_your_logo.png" alt="UNIVIEW Logo" class="logo">
+            <div id="welcomeMessage">Welcome, <span id="usernameDisplay"></span>!</div>
+            <button id="logoutButton" onclick="logout()">Logout</button>
+        </div>
         <input type="text" id="searchBar" placeholder="Search for a university..." />
         <button id="searchButton">🔍 Search</button>
     </header>
+
 
     <main>
         <section id="universityList" class="university-list">

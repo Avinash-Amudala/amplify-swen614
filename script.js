@@ -126,7 +126,18 @@ document.addEventListener('DOMContentLoaded', function () {
         Object.keys(universitiesData).forEach(name => {
             const card = document.createElement('div');
             card.className = 'university-card';
-            card.textContent = name;
+
+            const uniImage = document.createElement('img');
+            uniImage.src = 'path_to_university_logo.png'; // Replace with actual image path
+            uniImage.alt = name;
+            uniImage.className = 'university-logo';
+
+            const uniName = document.createElement('div');
+            uniName.className = 'university-name';
+            uniName.textContent = name;
+
+            card.appendChild(uniImage);
+            card.appendChild(uniName);
             card.onclick = () => displayUniversityDetails(name);
             universityList.appendChild(card);
         });

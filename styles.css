@@ -8,12 +8,42 @@ body {
 }
 
 header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     background: #005f73;
     color: #fff;
-    padding: 1rem 0;
-    text-align: center;
+    padding: 1rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
+.header-content {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    height: 50px; /* Adjust as needed */
+    margin-right: 10px;
+}
+
+#welcomeMessage {
+    margin-right: 20px;
+}
+
+#logoutButton {
+    padding: 0.5rem 1rem;
+    background-color: #f44336; /* Red color for logout */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#logoutButton:hover {
+    background-color: #d32f2f;
+}
+
 .login-modal {
     display: flex;
     position: fixed;
@@ -126,20 +156,33 @@ button#searchButton:hover {
 }
 
 .university-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     background: #fff;
-    border: none;
+    border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 1.5rem;
+    padding: 1rem;
     margin: 1rem;
     width: calc(33% - 2rem);
     cursor: pointer;
-    border-radius: 8px;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .university-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
+}
+
+.university-logo {
+    width: 100px; /* Adjust as needed */
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.university-name {
+    font-size: 1.2rem;
+    text-align: center;
 }
 
 .university-details {
