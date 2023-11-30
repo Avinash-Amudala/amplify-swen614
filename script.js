@@ -5,79 +5,68 @@ document.addEventListener('DOMContentLoaded', function () {
     let sentimentChartInstance = null;
     let userInteractions = {};
 
-    document.getElementById('loginModal').style.display = 'flex';
-    document.getElementById('app').style.filter = 'blur(3px)';
-
-    if (currentUser) {
-        hideLoginModal();
-        initializeApp();
-    }
-    document.getElementById('loginButton').addEventListener('click', attemptLogin);
-
-    function attemptLogin() {
-        const username = document.getElementById('usernameInput').value;
-        if (username) {
-            localStorage.setItem('currentUser', username);
-            hideLoginModal();
-            initializeApp();
-        } else {
-            alert("Please enter a username.");
-        }
-    }
-    function hideLoginModal() {
-        document.getElementById('loginModal').style.display = 'none';
-        document.getElementById('app').style.filter = 'none';
-    }
+    const loginModal = document.getElementById('loginModal');
+    const app = document.getElementById('app');
+    const usernameInput = document.getElementById('usernameInput');
+    const loginButton = document.getElementById('loginButton');
+    const searchBar = document.getElementById('searchBar');
+    const header = document.querySelector('header');
 
     function showLoginModal() {
-        document.getElementById('loginModal').style.display = 'flex';
-        document.getElementById('app').style.filter = 'blur(3px)';
+        loginModal.style.display = 'flex';
+        app.style.filter = 'blur(3px)';
     }
 
-    document.getElementById('loginButton').addEventListener('click', attemptLogin);
-
-    if (currentUser) {
-        document.getElementById('loginModal').style.display = 'none';
-        initializeApp();
-    } else {
-        document.getElementById('app').style.filter = 'blur(3px)';
+    function hideLoginModal() {
+        loginModal.style.display = 'none';
+        app.style.filter = 'none';
     }
 
-    document.getElementById('loginButton').addEventListener('click', function () {
-        const username = document.getElementById('usernameInput').value;
+    function initializeApp() {
+        if (searchBar) {
+            console.log("Initializing application...");
+            // Add logout button and welcome message
+            addLogoutButton();
+            fetchCsvData('https://uniview-dynamodb.s3.us-east-2.amazonaws.com/interactions.csv', processUniversityData);
+            fetchJsonData('https://uniview-dynamodb.s3.us-east-2.amazonaws.com/personalize_recommendations.json', processPersonalizeRecommendations);
+            setupSearchListener();
+        }
+    }
+
+    function addLogoutButton() {
+        const welcomeMsg = document.createElement('span');
+        welcomeMsg.textContent = `Welcome, ${currentUser}! `;
+        const logoutButton = document.createElement('button');
+        logoutButton.textContent = 'Logout';
+        logoutButton.onclick = logout;
+        header.appendChild(welcomeMsg);
+        header.appendChild(logoutButton);
+    }
+
+    function logout() {
+        localStorage.removeItem('currentUser');
+        currentUser = null;
+        header.innerHTML = '<input type="text" id="searchBar" placeholder="Search for a university..." /><button id="searchButton">🔍 Search</button>';
+        showLoginModal();
+    }
+
+    loginButton.addEventListener('click', function () {
+        const username = usernameInput.value;
         if (username) {
             localStorage.setItem('currentUser', username);
-            document.getElementById('loginModal').style.display = 'none';
-            document.getElementById('app').style.filter = 'none';
+            currentUser = username;
+            hideLoginModal();
             initializeApp();
         } else {
             alert("Please enter a username.");
         }
     });
 
-    function handleUniversityCardInteraction(universityId) {
-        userInteractions[universityId] = (userInteractions[universityId] || 0) + 1;
-
-        getRecommendations(currentUser, universityId);
-    }
-
-    function initializeApp() {
-        if (document.getElementById('searchBar')) {
-            console.log("Initializing application...");
-            fetchCsvData('https://uniview-dynamodb.s3.us-east-2.amazonaws.com/interactions.csv', processUniversityData);
-            fetchJsonData('https://uniview-dynamodb.s3.us-east-2.amazonaws.com/personalize_recommendations.json', processPersonalizeRecommendations);
-            setupSearchListener();
-        }
-    }
-    function setupSearchListener() {
-        const searchBar = document.getElementById('searchBar');
-        if (searchBar) {
-            searchBar.addEventListener('input', function (e) {
-                const searchTerm = e.target.value.toLowerCase();
-                const filteredNames = Object.keys(universitiesData).filter(name => name.toLowerCase().includes(searchTerm));
-                displayUniversityCards(filteredNames);
-            });
-        }
+    if (currentUser) {
+        hideLoginModal();
+        initializeApp();
+    } else {
+        showLoginModal();
     }
 
     function fetchCsvData(csvUrl, callback) {
@@ -126,7 +115,11 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log("Processed universitiesData:", universitiesData);
         displayUniversityCards();
     }
-
+    searchBar.addEventListener('input', function (e) {
+        const searchTerm = e.target.value.toLowerCase();
+        const filteredNames = Object.keys(universitiesData).filter(name => name.toLowerCase().includes(searchTerm));
+        displayUniversityCards(filteredNames);
+    });
     function displayUniversityCards() {
         const universityList = document.getElementById('universityList');
         universityList.innerHTML = '';
