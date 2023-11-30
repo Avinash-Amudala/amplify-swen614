@@ -370,17 +370,17 @@ document.addEventListener('DOMContentLoaded', function () {
         sentimentChartInstance = new Chart(ctx, {
             type: 'pie',
             data: {
-                labels: ['Positive', 'Negative', 'Neutral', 'Mixed'],
+                labels: ['Positive', 'Negative', 'Neutral'],
                 datasets: [{
                     label: 'Sentiment Analysis',
                     data: Object.values(counts),
-                    backgroundColor: ['green', 'red', 'blue', 'gray'],
-                    borderColor: ['darkgreen', 'darkred', 'darkblue', 'darkgray'],
+                    backgroundColor: ['green', 'red', 'blue'],
+                    borderColor: ['darkgreen', 'darkred', 'darkblue'],
                     borderWidth: 1
                 }]
             },
             options: {
-                responsive: true, // Chart will respond to container size
+                responsive: true,
                 maintainAspectRatio: false, // Do not maintain the aspect ratio
                 layout: {
                     padding: {

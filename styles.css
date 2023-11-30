@@ -283,22 +283,18 @@ button#searchButton:hover {
 }
 
 .modal-content {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    /* Ensure the modal content is large enough to fit the chart */
     width: 80%;
-    max-width: 600px; /* Adjusted for better layout */
-    margin: 2% auto;
-    overflow: auto; /* Enables scrolling if content overflows */
+    max-width: 600px;
+    max-height: 80vh;
+    overflow: auto; /* Allow scrolling within modal content */
 }
-
 .modal-body {
     display: grid;
     grid-template-columns: 1fr;
     gap: 20px;
     align-items: start;
-    overflow: auto; /* Allows scrolling within the modal body */
+    height: 100%; /* Full height */
 }
 .chart-container,
 .keywords-section,
@@ -315,8 +311,8 @@ button#searchButton:hover {
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    overflow: hidden; /* Hide any overflow */
-    max-height: 300px; /* Maximum height */
+    overflow: hidden; /* Ensures no overflow */
+    height: 60%; /* Adjust height as percentage */
     margin-top: 10px;
 }
 .keywords-container{
@@ -375,13 +371,13 @@ button#searchButton:hover {
 
 @media (max-width: 768px) {
     .chart-container {
-        max-height: 250px; /* Smaller height for smaller screens */
+        height: 50%; /* Adjust height for smaller screens */
     }
 }
 
 @media (max-width: 480px) {
     .chart-container {
-        max-height: 200px; /* Even smaller height for very small screens */
+        height: 40%; /* Further adjust height for very small screens */
     }
 }
 @media (max-width: 768px) {
