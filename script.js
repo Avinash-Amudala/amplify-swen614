@@ -12,6 +12,20 @@ document.addEventListener('DOMContentLoaded', function () {
     const searchBar = document.getElementById('searchBar');
     const header = document.querySelector('header');
 
+    function setupSearchListener() {
+        searchBar.addEventListener('input', function (e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredNames = Object.keys(universitiesData).filter(name => name.toLowerCase().includes(searchTerm));
+            displayUniversityCards(filteredNames);
+        });
+    }
+    function logout() {
+        localStorage.removeItem('currentUser');
+        currentUser = null;
+        showLoginModal();
+        // Additional reset actions as needed
+    }
+
     function showLoginModal() {
         loginModal.style.display = 'flex';
         app.style.filter = 'blur(3px)';
@@ -37,6 +51,10 @@ document.addEventListener('DOMContentLoaded', function () {
             fetchCsvData('https://uniview-dynamodb.s3.us-east-2.amazonaws.com/interactions.csv', processUniversityData);
             fetchJsonData('https://uniview-dynamodb.s3.us-east-2.amazonaws.com/personalize_recommendations.json', processPersonalizeRecommendations);
             setupSearchListener();
+        }
+        var logoutButton = document.getElementById('logoutButton');
+        if (logoutButton) {
+            logoutButton.addEventListener('click', logout);
         }
     }
 
