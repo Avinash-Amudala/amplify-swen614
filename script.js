@@ -34,8 +34,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         if (searchBar) {
             console.log("Initializing application...");
-            // Add logout button and welcome message
-            addLogoutButton();
             fetchCsvData('https://uniview-dynamodb.s3.us-east-2.amazonaws.com/interactions.csv', processUniversityData);
             fetchJsonData('https://uniview-dynamodb.s3.us-east-2.amazonaws.com/personalize_recommendations.json', processPersonalizeRecommendations);
             setupSearchListener();
