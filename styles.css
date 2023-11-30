@@ -295,11 +295,11 @@ button#searchButton:hover {
 
 .modal-body {
     display: grid;
-    grid-template-columns: 1fr; /* Single column layout */
+    grid-template-columns: 1fr;
     gap: 20px;
     align-items: start;
+    overflow: auto; /* Allows scrolling within the modal body */
 }
-
 .chart-container,
 .keywords-section,
 .score-container,
@@ -315,12 +315,10 @@ button#searchButton:hover {
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    overflow: visible;
-    height: 600px; /* Set a fixed height */
+    overflow: hidden; /* Hide any overflow */
+    max-height: 300px; /* Maximum height */
     margin-top: 10px;
 }
-
-
 .keywords-container{
     width: 100%; /* Full width within grid */
 }
@@ -376,15 +374,14 @@ button#searchButton:hover {
 }
 
 @media (max-width: 768px) {
-    .modal-content {
-        width: 90%;
+    .chart-container {
+        max-height: 250px; /* Smaller height for smaller screens */
     }
 }
 
 @media (max-width: 480px) {
-    .modal-content {
-        width: 95%;
-        max-width: none; /* Allows modal to fit smaller screens */
+    .chart-container {
+        max-height: 200px; /* Even smaller height for very small screens */
     }
 }
 @media (max-width: 768px) {
