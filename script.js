@@ -338,6 +338,24 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .catch(error => console.error('Error:', error));
     }
+    function updateUserInteractions(universityId) {
+        userInteractions[universityId] = (userInteractions[universityId] || 0) + 1;
+        if (Object.keys(userInteractions).length % 5 === 0) {
+            updateDynamicRecommendations();
+        }
+    }
+    card.onclick = () => {
+        displayUniversityDetails(name);
+        updateUserInteractions(name);
+    };
+    function updateDynamicRecommendations() {
+        const recentInteractions = Object.entries(userInteractions)
+            .sort((a, b) => b[1] - a[1]) // Sort by interaction count
+            .slice(0, 5) // Get top 5
+            .map(entry => entry[0]); // Extract university names
+
+        updateRecommendationsList(recentInteractions, currentUser);
+    }
 
     function createSentimentChart(counts, canvasId) {
         if (sentimentChartInstance) {
