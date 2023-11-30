@@ -322,8 +322,11 @@ button#searchButton:hover {
 }
 
 
-.score-container {
-    width: 80%; /* Full width within grid */
+.keywords-container{
+    width: 100%; /* Full width within grid */
+}
+.score-container{
+    width: 95%;
 }
 .keywords-container ul,
 .score-container ul,
