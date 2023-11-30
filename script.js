@@ -158,7 +158,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const details = universitiesData[name];
         createModal(name, details);
         getRecommendations(currentUser, name);
-        handleUniversityCardInteraction(name);  // Update user interactions
         getRecommendations(currentUser, name);
     }
 
@@ -404,5 +403,5 @@ document.addEventListener('DOMContentLoaded', function () {
         const filteredNames = Object.keys(universitiesData).filter(name => name.toLowerCase().includes(searchTerm));
         displayUniversityCards(filteredNames);
     });
-        initializeApp();
+    initializeApp();
 });
