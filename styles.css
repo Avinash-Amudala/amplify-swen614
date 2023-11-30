@@ -399,7 +399,7 @@ button#searchButton:hover {
 .video-section {
     position: relative;
     width: 100%; /* Full width of the page */
-    height: 700px;
+    height: 400px;
     overflow: hidden;
     margin-bottom: 20px;
     margin-top: 20px;
