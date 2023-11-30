@@ -366,14 +366,22 @@ document.addEventListener('DOMContentLoaded', function () {
         if (userInteractions.length >= 10) {
             // Get the last 5 interactions for recommendations
             const recentInteractions = userInteractions.slice(-5);
-            recommendedUniversities = recentInteractions;
+            recommendedUniversities = recentInteractions.map(id => universitiesData[id]?.name).filter(name => name);
         } else {
-            // Continue to use initial recommendations
-            recommendedUniversities = personalizeRecommendations.initialRecommendations.slice(0, 5);
+            // Ensure that personalizeRecommendations.initialRecommendations is an array
+            if (Array.isArray(personalizeRecommendations.initialRecommendations)) {
+                // Continue to use initial recommendations
+                recommendedUniversities = personalizeRecommendations.initialRecommendations.slice(0, 5);
+            } else {
+                // Handle the case where personalizeRecommendations.initialRecommendations is not available
+                recommendedUniversities = [];
+                console.error('Initial recommendations not available in personalizeRecommendations');
+            }
         }
 
         updateRecommendationsList(recommendedUniversities, currentUser);
     }
+
 
     function createSentimentChart(counts, canvasId) {
         if (sentimentChartInstance) {
