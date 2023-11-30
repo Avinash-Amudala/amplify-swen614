@@ -145,7 +145,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function displayUniversityDetails(name) {
-
+        if (!currentUser) {
+            alert("Please login first.");
+            return;
+        }
         const details = universitiesData[name];
         createModal(name, details);
         getRecommendations(currentUser, name);
