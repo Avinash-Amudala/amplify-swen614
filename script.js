@@ -266,15 +266,15 @@ document.addEventListener('DOMContentLoaded', function () {
         return topUniversity;
     }
 
-    function updateRecommendationsList(recommendedUniversities, universityName) {
-        console.log(`Updating recommendations list for: ${universityName}`);
-        const recommendationsListId = `recommendations-list-${universityName.replace(/\s+/g, '-')}`;
+    function updateRecommendationsList(recommendedUniversities, userId) {
+        const recommendationsListId = `recommendations-list-${userId.replace(/\s+/g, '-')}`;
         const recommendationsList = document.getElementById(recommendationsListId);
+
         if (recommendationsList) {
+            recommendationsList.innerHTML = ''; // Clear existing recommendations
+
             if (recommendedUniversities.length > 0) {
-                recommendationsList.innerHTML = '';
                 recommendedUniversities.forEach(recommendedUniversity => {
-                    // Create a card for each recommended university
                     const card = document.createElement('div');
                     card.className = 'university-card';
                     card.textContent = recommendedUniversity;
@@ -360,12 +360,19 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function updateDynamicRecommendations() {
-        // Calculate the start index for slicing the array
-        let startIndex = Math.max(userInteractions.length - 10, 0);
-        let endIndex = userInteractions.length - 5;
+        let recommendedUniversities;
 
-        const recentInteractions = userInteractions.slice(startIndex, endIndex);
-        updateRecommendationsList(recentInteractions, currentUser);
+        // Check if there are at least 10 interactions
+        if (userInteractions.length >= 10) {
+            // Get the last 5 interactions for recommendations
+            const recentInteractions = userInteractions.slice(-5);
+            recommendedUniversities = recentInteractions;
+        } else {
+            // Continue to use initial recommendations
+            recommendedUniversities = personalizeRecommendations.initialRecommendations.slice(0, 5);
+        }
+
+        updateRecommendationsList(recommendedUniversities, currentUser);
     }
 
     function createSentimentChart(counts, canvasId) {
