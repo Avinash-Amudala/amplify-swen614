@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let universitiesData = {};
     let personalizeRecommendations = {};
     let sentimentChartInstance = null;
-    let userInteractions = {};
+    let userInteractions = [];
 
     const loginModal = document.getElementById('loginModal');
     const app = document.getElementById('app');
@@ -50,6 +50,10 @@ document.addEventListener('DOMContentLoaded', function () {
         var logoutButton = document.getElementById('logoutButton');
         if (logoutButton) {
             logoutButton.addEventListener('click', logout);
+        }
+        if (currentUser) {
+            // Assuming the JSON file gives a list of initial recommendations
+            updateRecommendationsList(personalizeRecommendations.initialRecommendations, currentUser);
         }
     }
     function setupSearchListener() {
@@ -163,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function displayUniversityDetails(name) {
         const details = universitiesData[name];
         createModal(name, details);
-        getRecommendations(currentUser, name);
+        updateUserInteractions(name);
         getRecommendations(currentUser, name);
     }
 
@@ -344,17 +348,19 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => console.error('Error:', error));
     }
     function updateUserInteractions(universityId) {
-        userInteractions[universityId] = (userInteractions[universityId] || 0) + 1;
-        if (Object.keys(userInteractions).length % 5 === 0) {
+        userInteractions.push(universityId);
+        // After every 5 new interactions, update recommendations
+        if (userInteractions.length % 5 === 0) {
             updateDynamicRecommendations();
         }
     }
-    function updateDynamicRecommendations() {
-        const recentInteractions = Object.entries(userInteractions)
-            .sort((a, b) => b[1] - a[1]) // Sort by interaction count
-            .slice(0, 5) // Get top 5
-            .map(entry => entry[0]); // Extract university names
 
+    function updateDynamicRecommendations() {
+        // Calculate the start index for slicing the array
+        let startIndex = Math.max(userInteractions.length - 10, 0); // Ensures it doesn't go negative
+        let endIndex = userInteractions.length - 5; // Last five interactions are excluded
+
+        const recentInteractions = userInteractions.slice(startIndex, endIndex);
         updateRecommendationsList(recentInteractions, currentUser);
     }
 
