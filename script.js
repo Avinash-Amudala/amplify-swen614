@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let universitiesData = {};
     let personalizeRecommendations = {};
     let sentimentChartInstance = null;
-    let userInteractions = [];
+    let userInteractions = {};
 
     const loginModal = document.getElementById('loginModal');
     const app = document.getElementById('app');
@@ -51,19 +51,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (logoutButton) {
             logoutButton.addEventListener('click', logout);
         }
-        if (currentUser) {
-            // Determine the default or user-preferred university for initial recommendations
-            let defaultUniversity = "Australian National University"; // Replace with user preference if available
-            if (personalizeRecommendations[defaultUniversity]) {
-                personalizeRecommendations.initialRecommendations = personalizeRecommendations[defaultUniversity].recommendedItems.slice(0, 5);
-            } else {
-                // Fallback in case the specific entry is not found
-                personalizeRecommendations.initialRecommendations = [];
-            }
-            updateRecommendationsList(personalizeRecommendations.initialRecommendations, currentUser);
-        }
     }
-
     function setupSearchListener() {
         document.getElementById('searchBar').addEventListener('input', function (e) {
             const searchTerm = e.target.value.toLowerCase();
@@ -195,14 +183,11 @@ document.addEventListener('DOMContentLoaded', function () {
         let interactedUniversities = Object.keys(userInteractions);
 
         let averageSentiments = interactedUniversities.map(universityId => {
-            if (universitiesData[universityId]) {
-                let scores = universitiesData[universityId].sentimentScores;
-                let avgPositive = scores.reduce((acc, curr) => acc + curr.positive, 0) / scores.length;
-                let avgNegative = scores.reduce((acc, curr) => acc + curr.negative, 0) / scores.length;
-                return { universityId, avgPositive, avgNegative };
-            }
-            return null;
-        }).filter(item => item !== null); // Filter out any nulls resulting from missing data
+            let scores = universitiesData[universityId].sentimentScores;
+            let avgPositive = scores.reduce((acc, curr) => acc + curr.positive, 0) / scores.length;
+            let avgNegative = scores.reduce((acc, curr) => acc + curr.negative, 0) / scores.length;
+            return { universityId, avgPositive, avgNegative };
+        });
 
         averageSentiments.sort((a, b) => b.avgPositive - a.avgPositive);
 
@@ -223,7 +208,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         return [...new Set(recommendedUniversities)].slice(0, 5);
     }
-
 
 
     function getInitialRecommendations(currentUniversityId) {
@@ -274,15 +258,15 @@ document.addEventListener('DOMContentLoaded', function () {
         return topUniversity;
     }
 
-    function updateRecommendationsList(recommendedUniversities, userId) {
-        const recommendationsListId = `recommendations-list-${userId.replace(/\s+/g, '-')}`;
+    function updateRecommendationsList(recommendedUniversities, universityName) {
+        console.log(`Updating recommendations list for: ${universityName}`);
+        const recommendationsListId = `recommendations-list-${universityName.replace(/\s+/g, '-')}`;
         const recommendationsList = document.getElementById(recommendationsListId);
-
         if (recommendationsList) {
-            recommendationsList.innerHTML = ''; // Clear existing recommendations
-
             if (recommendedUniversities.length > 0) {
+                recommendationsList.innerHTML = '';
                 recommendedUniversities.forEach(recommendedUniversity => {
+                    // Create a card for each recommended university
                     const card = document.createElement('div');
                     card.className = 'university-card';
                     card.textContent = recommendedUniversity;
@@ -360,37 +344,20 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => console.error('Error:', error));
     }
     function updateUserInteractions(universityId) {
-        userInteractions.push(universityId);
-        // After every 5 new interactions, update recommendations
-        if (userInteractions.length % 5 === 0) {
+        userInteractions[universityId] = (userInteractions[universityId] || 0) + 1;
+        if (Object.keys(userInteractions).length % 5 === 0) {
             updateDynamicRecommendations();
         }
     }
 
     function updateDynamicRecommendations() {
-        let recommendedUniversities = [];
-        let interactionPhase = Math.floor(userInteractions.length / 5);
+        const recentInteractions = Object.entries(userInteractions)
+            .sort((a, b) => b[1] - a[1]) // Sort by interaction count
+            .slice(0, 5) // Get top 5
+            .map(entry => entry[0]); // Extract university names
 
-        if (interactionPhase === 0) {
-            // Use the initial recommendations for the first 5 interactions
-            recommendedUniversities = personalizeRecommendations.initialRecommendations;
-        } else {
-            // For subsequent phases, use the universities from the previous set of interactions
-            let previousSetStartIndex = (interactionPhase - 1) * 5;
-            let previousSetEndIndex = previousSetStartIndex + 5;
-            let previousSetOfUniversities = userInteractions.slice(previousSetStartIndex, previousSetEndIndex);
-
-            previousSetOfUniversities.forEach(universityId => {
-                if (personalizeRecommendations[universityId]) {
-                    recommendedUniversities = recommendedUniversities.concat(personalizeRecommendations[universityId].recommendedItems);
-                }
-            });
-
-            // Remove duplicates and limit to 5 recommendations
-            recommendedUniversities = [...new Set(recommendedUniversities)].slice(0, 5);
-        }
-
-        updateRecommendationsList(recommendedUniversities, currentUser);
+        // Update the recommendation list with these recent interactions
+        updateRecommendationsList(recentInteractions, currentUser);
     }
 
 
