@@ -106,7 +106,6 @@ document.addEventListener('DOMContentLoaded', function () {
             alert("Please enter a username.");
         }
     }
-    document.getElementById('loginButton').addEventListener('click', handleLogin);
 
     function displayUniversityDetails(name) {
         if (!currentUser) {
