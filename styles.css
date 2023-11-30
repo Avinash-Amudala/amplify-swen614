@@ -278,6 +278,8 @@ button#searchButton:hover {
     background-color: rgba(0, 0, 0, 0.6);
     align-items: center;
     justify-content: center;
+    overflow-y: auto; /* Allow vertical scrolling */
+    max-height: 80vh;
 }
 
 .modal-content {
@@ -311,6 +313,9 @@ button#searchButton:hover {
 .chart-container {
     max-height: 400px; /* Adjusted height */
     overflow: hidden;
+    padding: 15px;
+    padding-bottom: 30px; /* Increase bottom padding to prevent cutoff */
+    margin-top: 10px;
 }
 .keywords-container,
 .score-container {
@@ -339,6 +344,7 @@ button#searchButton:hover {
     margin-top: -10px;
     z-index: 10;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 10;
 }
 
 .keywords-container, .score-container, .personalized-recommendations {
@@ -462,23 +468,24 @@ button#searchButton:hover {
     margin-top: 10px;
 }
 .keywords-container {
-    position: relative;
-    padding: 15px;
-    padding-top: 30px;
-    max-height: 250px;
-    overflow-y: auto;
-    overflow-x: hidden;
-    border: 1px solid #ddd;
-}
-
-.keywords-container {
     background: #fff;
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin-top: 10px;
+    position: relative; /* Needed for proper stacking context */
+    padding-top: 40px;
 }
-
+.keywords-container h3 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    padding: 10px 15px;
+    margin-top: -20px; /* Adjust this value as needed */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 .keywords-container ul {
     list-style: none;
     padding: 0;
