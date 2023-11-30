@@ -8,14 +8,9 @@ body {
 }
 
 header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem;
     background: #005f73;
-    color: #fff;
-    padding: 1rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 10px 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .header-content {
@@ -24,28 +19,61 @@ header {
 }
 
 .logo {
-    height: 50px; /* Adjust as needed */
+    height: 60px; /* Adjust as needed */
     margin-right: 10px;
 }
-
-#welcomeMessage {
-    margin-right: 20px;
-}
 #welcomeMessage, #logoutButton {
-    margin-left: 10px; /* Adjust as needed */
+    margin-left: 10px;
+}
+button {
+    transition: all 0.3s ease; /* Smooth transition for buttons */
 }
 
+button:hover {
+    transform: scale(1.05); /* Slight increase in size on hover */
+}
+
+/* Responsive Design Adjustments */
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .logo {
+        margin-bottom: 10px; /* Space between logo and welcome message */
+    }
+
+    .university-card {
+        width: calc(50% - 1rem); /* Adjust width for medium screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .university-card {
+        width: 100%; /* Full width for small screens */
+        margin: 10px 0; /* Adjust margin for stacked layout */
+    }
+
+    .modal-content, .login-box {
+        width: 95%; /* Full width with slight margin */
+    }
+}
 #logoutButton {
     padding: 0.5rem 1rem;
-    background-color: #f44336; /* Red color for logout */
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    background-color: #EF476F;
+    transition: background-color 0.3s;
 }
 
 #logoutButton:hover {
-    background-color: #d32f2f;
+    background-color: #FF6F91;
+}
+body, .login-box, .university-card, .modal-content, .keywords-container {
+    border-radius: 10px;
 }
 
 .login-modal {
