@@ -2,8 +2,13 @@ document.addEventListener('DOMContentLoaded', function () {
     let universitiesData = {};
     let personalizeRecommendations = {};
     let sentimentChartInstance = null;
-    let currentUser = null;
+    let currentUser = localStorage.getItem('currentUser');
     let userInteractions = {};
+
+    if (!currentUser) {
+        window.location.href = 'login.html';
+        return;
+    }
 
     function handleUniversityCardInteraction(universityId) {
         // Update the user's interaction history
@@ -198,7 +203,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         return topUniversity;
     }
-
 
     function updateRecommendationsList(recommendedUniversities, universityName) {
         console.log(`Updating recommendations list for: ${universityName}`);
