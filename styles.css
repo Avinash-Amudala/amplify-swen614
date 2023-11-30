@@ -398,8 +398,9 @@ button#searchButton:hover {
 }
 .video-section {
     position: relative;
-    height: 300px; /* Adjust as needed */
+    height: 500px;
     overflow: hidden;
+    margin-bottom: 20px;
 }
 
 .stock-video {
