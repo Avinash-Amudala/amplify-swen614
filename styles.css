@@ -399,13 +399,13 @@ button#searchButton:hover {
 .video-section {
     position: relative;
     height: 400px;
-    width: 70%;
     overflow: hidden;
     margin-bottom: 20px;
+    margin-top: 20px;
 }
 
 .stock-video {
-    width: 100%;
-    height: 100%;
+    width: 80%;
+    height: 80%;
     object-fit: cover;
 }
