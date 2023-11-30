@@ -31,13 +31,6 @@ header {
     flex-grow: 1; /* Allows the text to take the available space */
     text-align: center; /* Center the text */
 }
-.header-content::before {
-    content: 'UNIVIEW';
-    font-size: 2rem; /* Adjust size as needed */
-    color: #fff;
-    text-shadow: 3px 3px 0px rgba(0,0,0,0.2); /* Create 3D effect */
-    margin-right: 20px; /* Spacing after the 3D text */
-}
 
 .logo {
     height: 50px;
