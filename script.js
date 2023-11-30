@@ -380,17 +380,23 @@ document.addEventListener('DOMContentLoaded', function () {
                 }]
             },
             options: {
-                responsive: true,
-                maintainAspectRatio: false,
+                responsive: true, // Chart will respond to container size
+                maintainAspectRatio: false, // Do not maintain the aspect ratio
                 layout: {
                     padding: {
                         top: 15,
                         bottom: 15
                     }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top' // Adjust legend position as needed
+                    }
                 }
             }
         });
     }
+
     function calculateSentimentCounts(reviews) {
         return reviews.reduce((counts, review) => {
             counts[review.EVENT_VALUE] = (counts[review.EVENT_VALUE] || 0) + 1;

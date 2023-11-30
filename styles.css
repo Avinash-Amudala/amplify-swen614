@@ -313,14 +313,11 @@ button#searchButton:hover {
 .chart-container {
     background: #fff;
     padding: 15px;
-    padding-bottom: 30px; /* Extra space for the bottom of the chart */
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    height: 500px; /* Increased height */
-    overflow: visible; /* Adjust as needed */
+    overflow: visible;
     margin-top: 10px;
 }
-
 
 .keywords-container{
     width: 100%; /* Full width within grid */
