@@ -52,10 +52,18 @@ document.addEventListener('DOMContentLoaded', function () {
             logoutButton.addEventListener('click', logout);
         }
         if (currentUser) {
-            // Assuming the JSON file gives a list of initial recommendations
+            // Determine the default or user-preferred university for initial recommendations
+            let defaultUniversity = "Australian National University"; // Replace with user preference if available
+            if (personalizeRecommendations[defaultUniversity]) {
+                personalizeRecommendations.initialRecommendations = personalizeRecommendations[defaultUniversity].recommendedItems.slice(0, 5);
+            } else {
+                // Fallback in case the specific entry is not found
+                personalizeRecommendations.initialRecommendations = [];
+            }
             updateRecommendationsList(personalizeRecommendations.initialRecommendations, currentUser);
         }
     }
+
     function setupSearchListener() {
         document.getElementById('searchBar').addEventListener('input', function (e) {
             const searchTerm = e.target.value.toLowerCase();
@@ -361,11 +369,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function updateDynamicRecommendations() {
         let recommendedUniversities = [];
-        let interactionPhase = Math.floor((userInteractions.length - 1) / 5);
+        let interactionPhase = Math.floor(userInteractions.length / 5);
 
         if (interactionPhase === 0) {
             // Use the initial recommendations for the first 5 interactions
-            recommendedUniversities = personalizeRecommendations.initialRecommendations.slice(0, 5);
+            recommendedUniversities = personalizeRecommendations.initialRecommendations;
         } else {
             // For subsequent phases, use the universities from the previous set of interactions
             let previousSetStartIndex = (interactionPhase - 1) * 5;
@@ -382,7 +390,6 @@ document.addEventListener('DOMContentLoaded', function () {
             recommendedUniversities = [...new Set(recommendedUniversities)].slice(0, 5);
         }
 
-        // Update the recommendation list
         updateRecommendationsList(recommendedUniversities, currentUser);
     }
 
