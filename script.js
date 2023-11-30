@@ -1,16 +1,28 @@
 document.addEventListener('DOMContentLoaded', function () {
     let currentUser = localStorage.getItem('currentUser');
-
-    if (!currentUser) {
-        // Redirect to login page if not logged in
-        window.location.href = 'login.html';
-        return; // Stop further script execution
-    }
-
     let universitiesData = {};
     let personalizeRecommendations = {};
     let sentimentChartInstance = null;
     let userInteractions = {};
+
+    if (currentUser) {
+        document.getElementById('loginModal').style.display = 'none';
+        initializeApp();
+    } else {
+        document.getElementById('app').style.filter = 'blur(3px)';
+    }
+
+    document.getElementById('loginButton').addEventListener('click', function () {
+        const username = document.getElementById('usernameInput').value;
+        if (username) {
+            localStorage.setItem('currentUser', username);
+            document.getElementById('loginModal').style.display = 'none';
+            document.getElementById('app').style.filter = 'none';
+            initializeApp();
+        } else {
+            alert("Please enter a username.");
+        }
+    });
 
     function handleUniversityCardInteraction(universityId) {
         // Update the user's interaction history
@@ -97,16 +109,6 @@ document.addEventListener('DOMContentLoaded', function () {
             card.onclick = () => displayUniversityDetails(name);
             universityList.appendChild(card);
         });
-    }
-    function handleLogin() {
-        const username = document.getElementById('usernameInput').value;
-        if (username) {
-            currentUser = username; // Set the current user
-            document.getElementById('loginForm').style.display = 'none'; // Hide login form
-            initializeApp(); // Initialize the app after login
-        } else {
-            alert("Please enter a username.");
-        }
     }
 
     function displayUniversityDetails(name) {
