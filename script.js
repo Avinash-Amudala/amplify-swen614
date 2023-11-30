@@ -206,9 +206,17 @@ document.addEventListener('DOMContentLoaded', function () {
         const recommendationsList = document.getElementById(recommendationsListId);
         if (recommendationsList) {
             if (recommendedUniversities.length > 0) {
-                recommendationsList.innerHTML = recommendedUniversities.map(university => `<li>${university}</li>`).join('');
+                recommendationsList.innerHTML = ''; // Clear existing recommendations
+                recommendedUniversities.forEach(recommendedUniversity => {
+                    // Create a card for each recommended university
+                    const card = document.createElement('div');
+                    card.className = 'university-card';
+                    card.textContent = recommendedUniversity;
+                    card.onclick = () => displayUniversityDetails(recommendedUniversity);
+                    recommendationsList.appendChild(card);
+                });
             } else {
-                recommendationsList.innerHTML = '<li>No recommendations available</li>';
+                recommendationsList.innerHTML = '<div>No recommendations available</div>';
             }
         }
     }
