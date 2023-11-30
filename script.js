@@ -19,10 +19,13 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function initializeApp() {
-        console.log("Initializing application...");
-        fetchCsvData('https://uniview-dynamodb.s3.us-east-2.amazonaws.com/interactions.csv', processUniversityData);
-        fetchJsonData('https://uniview-dynamodb.s3.us-east-2.amazonaws.com/personalize_recommendations.json', processPersonalizeRecommendations);
-        setupSearchListener();
+        // Only run this on the main page
+        if (document.getElementById('searchBar')) {
+            console.log("Initializing application...");
+            fetchCsvData('https://uniview-dynamodb.s3.us-east-2.amazonaws.com/interactions.csv', processUniversityData);
+            fetchJsonData('https://uniview-dynamodb.s3.us-east-2.amazonaws.com/personalize_recommendations.json', processPersonalizeRecommendations);
+            setupSearchListener();
+        }
     }
     function setupSearchListener() {
         const searchBar = document.getElementById('searchBar');
