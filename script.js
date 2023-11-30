@@ -187,11 +187,14 @@ document.addEventListener('DOMContentLoaded', function () {
         let interactedUniversities = Object.keys(userInteractions);
 
         let averageSentiments = interactedUniversities.map(universityId => {
-            let scores = universitiesData[universityId].sentimentScores;
-            let avgPositive = scores.reduce((acc, curr) => acc + curr.positive, 0) / scores.length;
-            let avgNegative = scores.reduce((acc, curr) => acc + curr.negative, 0) / scores.length;
-            return { universityId, avgPositive, avgNegative };
-        });
+            if (universitiesData[universityId]) {
+                let scores = universitiesData[universityId].sentimentScores;
+                let avgPositive = scores.reduce((acc, curr) => acc + curr.positive, 0) / scores.length;
+                let avgNegative = scores.reduce((acc, curr) => acc + curr.negative, 0) / scores.length;
+                return { universityId, avgPositive, avgNegative };
+            }
+            return null;
+        }).filter(item => item !== null); // Filter out any nulls resulting from missing data
 
         averageSentiments.sort((a, b) => b.avgPositive - a.avgPositive);
 
@@ -212,6 +215,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         return [...new Set(recommendedUniversities)].slice(0, 5);
     }
+
 
 
     function getInitialRecommendations(currentUniversityId) {
