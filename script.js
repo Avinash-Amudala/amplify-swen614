@@ -12,13 +12,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const searchBar = document.getElementById('searchBar');
     const header = document.querySelector('header');
 
-    function setupSearchListener() {
-        searchBar.addEventListener('input', function (e) {
-            const searchTerm = e.target.value.toLowerCase();
-            const filteredNames = Object.keys(universitiesData).filter(name => name.toLowerCase().includes(searchTerm));
-            displayUniversityCards(filteredNames);
-        });
-    }
     function logout() {
         localStorage.removeItem('currentUser');
         currentUser = null;
@@ -130,11 +123,7 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log("Processed universitiesData:", universitiesData);
         displayUniversityCards();
     }
-    searchBar.addEventListener('input', function (e) {
-        const searchTerm = e.target.value.toLowerCase();
-        const filteredNames = Object.keys(universitiesData).filter(name => name.toLowerCase().includes(searchTerm));
-        displayUniversityCards(filteredNames);
-    });
+
     function displayUniversityCards() {
         const universityList = document.getElementById('universityList');
         universityList.innerHTML = '';
