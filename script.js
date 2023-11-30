@@ -6,6 +6,34 @@ document.addEventListener('DOMContentLoaded', function () {
     let userInteractions = {};
 
     if (currentUser) {
+        hideLoginModal();
+    } else {
+        showLoginModal();
+    }
+    function attemptLogin() {
+        const username = document.getElementById('usernameInput').value;
+        if (username) {
+            localStorage.setItem('currentUser', username);
+            hideLoginModal();
+            initializeApp();
+        } else {
+            alert("Please enter a username.");
+        }
+    }
+
+    function hideLoginModal() {
+        document.getElementById('loginModal').style.display = 'none';
+        document.getElementById('app').style.filter = 'none';
+    }
+
+    function showLoginModal() {
+        document.getElementById('loginModal').style.display = 'flex';
+        document.getElementById('app').style.filter = 'blur(3px)';
+    }
+
+    document.getElementById('loginButton').addEventListener('click', attemptLogin);
+
+    if (currentUser) {
         document.getElementById('loginModal').style.display = 'none';
         initializeApp();
     } else {
