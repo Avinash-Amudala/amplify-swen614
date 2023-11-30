@@ -357,8 +357,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function updateDynamicRecommendations() {
         // Calculate the start index for slicing the array
-        let startIndex = Math.max(userInteractions.length - 10, 0); // Ensures it doesn't go negative
-        let endIndex = userInteractions.length - 5; // Last five interactions are excluded
+        let startIndex = Math.max(userInteractions.length - 10, 0);
+        let endIndex = userInteractions.length - 5;
 
         const recentInteractions = userInteractions.slice(startIndex, endIndex);
         updateRecommendationsList(recentInteractions, currentUser);
