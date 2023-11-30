@@ -72,14 +72,14 @@ header {
 
 .login-box-header {
     font-size: 24px;
-    color: #4A47A3; /* Dark blue color */
+    color: #005f73;
     margin-bottom: 15px;
     font-family: 'Nunito', sans-serif;
 }
 
 .login-box-team-name {
     font-size: 20px;
-    color: #4A47A3; /* Dark blue color */
+    color: #005f73;
     font-weight: bold;
     margin-bottom: 10px;
 }
@@ -132,8 +132,8 @@ header {
     justify-content: center;
     align-items: center;
     padding: 20px;
-    background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
-    margin-top: -50px; /* Adjust as needed */
+    background-color: rgba(255, 255, 255, 0.9);
+    margin-top: 20px;
 }
 
 input#searchBar, button#searchButton {
