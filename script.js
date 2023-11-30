@@ -23,6 +23,15 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function initializeApp() {
+        if (currentUser) {
+            document.getElementById('welcomeMessage').textContent = `Welcome, ${currentUser}!`;
+            document.getElementById('logoutButton').style.display = 'block';
+            hideLoginModal();
+        } else {
+            document.getElementById('welcomeMessage').textContent = '';
+            document.getElementById('logoutButton').style.display = 'none';
+            showLoginModal();
+        }
         if (searchBar) {
             console.log("Initializing application...");
             // Add logout button and welcome message
@@ -33,20 +42,11 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    function addLogoutButton() {
-        const welcomeMsg = document.createElement('span');
-        welcomeMsg.textContent = `Welcome, ${currentUser}! `;
-        const logoutButton = document.createElement('button');
-        logoutButton.textContent = 'Logout';
-        logoutButton.onclick = logout;
-        header.appendChild(welcomeMsg);
-        header.appendChild(logoutButton);
-    }
-
     function logout() {
         localStorage.removeItem('currentUser');
         currentUser = null;
-        header.innerHTML = '<input type="text" id="searchBar" placeholder="Search for a university..." /><button id="searchButton">🔍 Search</button>';
+        document.getElementById('welcomeMessage').textContent = '';
+        document.getElementById('logoutButton').style.display = 'none';
         showLoginModal();
     }
 
@@ -55,7 +55,6 @@ document.addEventListener('DOMContentLoaded', function () {
         if (username) {
             localStorage.setItem('currentUser', username);
             currentUser = username;
-            hideLoginModal();
             initializeApp();
         } else {
             alert("Please enter a username.");
