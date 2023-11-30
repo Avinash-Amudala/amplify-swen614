@@ -322,9 +322,8 @@ button#searchButton:hover {
 }
 
 
-.keywords-container,
 .score-container {
-    width: 100%; /* Full width within grid */
+    width: 80%; /* Full width within grid */
 }
 .keywords-container ul,
 .score-container ul,
@@ -489,10 +488,6 @@ button#searchButton:hover {
     flex: 1;
 }
 
-
-canvas{
-    margin-top: -30px;
-}
 .keywords-container {
     background: #fff;
     padding: 15px;
