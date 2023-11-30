@@ -360,28 +360,29 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function updateDynamicRecommendations() {
-        let recommendedUniversities;
+        let recommendedUniversities = [];
 
-        // Check if there are at least 10 interactions
-        if (userInteractions.length >= 10) {
-            // Get the last 5 interactions for recommendations
-            const recentInteractions = userInteractions.slice(-5);
-            recommendedUniversities = recentInteractions.map(id => universitiesData[id]?.name).filter(name => name);
-        } else {
-            // Ensure that personalizeRecommendations.initialRecommendations is an array
-            if (Array.isArray(personalizeRecommendations.initialRecommendations)) {
-                // Continue to use initial recommendations
-                recommendedUniversities = personalizeRecommendations.initialRecommendations.slice(0, 5);
-            } else {
-                // Handle the case where personalizeRecommendations.initialRecommendations is not available
-                recommendedUniversities = [];
-                console.error('Initial recommendations not available in personalizeRecommendations');
+        // Calculate the index range for the current set of recommendations
+        let interactionCount = userInteractions.length;
+        let startIndex = Math.max(0, Math.floor((interactionCount - 5) / 5) * 5);
+        let endIndex = startIndex + 5;
+
+        // Get the current set of universities based on the interaction count
+        let currentSetOfUniversities = userInteractions.slice(startIndex, endIndex);
+
+        // Get recommendations for each university in the current set
+        currentSetOfUniversities.forEach(universityId => {
+            if (personalizeRecommendations[universityId]) {
+                recommendedUniversities = recommendedUniversities.concat(personalizeRecommendations[universityId].recommendedItems);
             }
-        }
+        });
 
+        // Remove duplicates and limit to 5 recommendations
+        recommendedUniversities = [...new Set(recommendedUniversities)].slice(0, 5);
+
+        // Update the recommendation list
         updateRecommendationsList(recommendedUniversities, currentUser);
     }
-
 
     function createSentimentChart(counts, canvasId) {
         if (sentimentChartInstance) {
